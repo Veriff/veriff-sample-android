@@ -40,7 +40,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".service.VeriffLibraryStatusUpdatesService"
+        <service android:name=".service.VeriffSDKStatusUpdatesService"
             android:exported="false">
             <intent-filter>
                 <action android:name="me.veriff.STATUS_UPDATE" />

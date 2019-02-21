@@ -3,7 +3,7 @@ package mobi.lab.veriff.sample.service;
 import mobi.lab.veriff.data.VeriffConstants;
 import mobi.lab.veriff.service.VeriffStatusUpdatesService;
 
-public class VeriffLibraryStatusUpdatesService extends VeriffStatusUpdatesService {
+public class VeriffSDKStatusUpdatesService extends VeriffStatusUpdatesService {
 
     @Override
     protected void onStatusChanged(String sessionToken, int statusCode) {
@@ -18,13 +18,13 @@ public class VeriffLibraryStatusUpdatesService extends VeriffStatusUpdatesServic
         } else if (statusCode == VeriffConstants.STATUS_ERROR_NETWORK) {
             //network unavailable
         } else if (statusCode == VeriffConstants.STATUS_USER_CANCELED) {
-            //user closed library
+            //user closed SDK
         } else if (statusCode == VeriffConstants.STATUS_UNABLE_TO_ACCESS_CAMERA) {
             //we are unable to access phone camera (either access denied or there are no usable cameras)
         } else if (statusCode == VeriffConstants.STATUS_SUBMITTED) {
             //SelfID photos were successfully uploaded
         } else if (statusCode == VeriffConstants.STATUS_ERROR_SESSION) {
-            //invalid sessionToken was passed to the library
+            //invalid sessionToken was passed to the SDK
         } else if (statusCode == VeriffConstants.STATUS_DONE) {
             //verification specialist declined the session
         }

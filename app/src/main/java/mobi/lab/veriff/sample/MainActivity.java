@@ -2,7 +2,6 @@ package mobi.lab.veriff.sample;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -17,7 +16,6 @@ import com.google.gson.GsonBuilder;
 import java.security.MessageDigest;
 import java.util.Date;
 
-import mobi.lab.veriff.data.ColorSchema;
 import mobi.lab.veriff.data.Veriff;
 import mobi.lab.veriff.network.AcceptHeaderInterceptor;
 import mobi.lab.veriff.sample.data.TokenPayload;
@@ -40,7 +38,7 @@ import static mobi.lab.veriff.sample.BuildConfig.API_SECRET;
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_VERIFF = 8000;
-    private static final int REQUEST_SUCCESSFULL = 201;
+    private static final int REQUEST_SUCCESSFUL = 201;
     private static Log log = Log.getInstance("Retrofit");
     private static final String BASE_URL = "https://stagingapi.veriff.me";
     private static final String URL_STAGING = "https://staging.veriff.me/v1/";
@@ -51,8 +49,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final TokenService tokenService = createRetrofit().create(TokenService.class);
-
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -61,35 +57,37 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                String pay = "{\"verification\":{\"document\":{\"number\":\"B01234567\",\"type\":\"ID_CARD\",\"country\":\"EE\"},\"additionalData\":{\"placeOfResidence\":\"Tartu\",\"citizenship\":\"EE\"},\"timestamp\":\"2018-12-12T11:02:05.261Z\",\"lang\":\"et\",\"features\":[\"selfid\"],\"person\":{\"firstName\":\"Tundmatu\",\"idNumber\":\"38508260269\",\"lastName\":\"Toomas\"}}}";
-
-                TokenPayload load = GSON.fromJson(pay, TokenPayload.class);
-
-                String toBeHashed =  GSON.toJson(load) + API_SECRET;
-                String signature = sha256(toBeHashed);
-
-                tokenService.getToken(signature, load).enqueue(new Callback<TokenResponse>() {
-                    @Override
-                    public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
-                        if (response.isSuccessful() && response.code() == REQUEST_SUCCESSFULL && response.body() != null) {
-                            launchVeriffLibrary(response.body());
-                        }
-                        else {
-                            Toast.makeText(MainActivity.this, response.message(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<TokenResponse> call, Throwable t) {
-                        Toast.makeText(MainActivity.this, "Something went wrong, please contact development team", Toast.LENGTH_LONG).show();
-                    }
-                });
+                makeTokenRequestAndLaunchVeriff();
             }
         });
     }
 
-    public static String sha256(String base) {
+    private void makeTokenRequestAndLaunchVeriff() {
+        final TokenService tokenService = createRetrofit().create(TokenService.class);
+        String pay = "{\"verification\":{\"document\":{\"number\":\"B01234567\",\"type\":\"ID_CARD\",\"country\":\"EE\"},\"additionalData\":{\"placeOfResidence\":\"Tartu\",\"citizenship\":\"EE\"},\"timestamp\":\"2018-12-12T11:02:05.261Z\",\"lang\":\"et\",\"features\":[\"selfid\"],\"person\":{\"firstName\":\"Tundmatu\",\"idNumber\":\"38508260269\",\"lastName\":\"Toomas\"}}}";
+        TokenPayload load = GSON.fromJson(pay, TokenPayload.class);
+        String toBeHashed =  GSON.toJson(load) + API_SECRET;
+        String signature = sha256(toBeHashed);
+
+        tokenService.getToken(signature, load).enqueue(new Callback<TokenResponse>() {
+            @Override
+            public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
+                if (response.isSuccessful() && response.code() == REQUEST_SUCCESSFUL && response.body() != null) {
+                    launchVeriffSDK(response.body());
+                }
+                else {
+                    Toast.makeText(MainActivity.this, response.message(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TokenResponse> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Something went wrong, please contact development team", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private static String sha256(String base) {
         try{
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(base.getBytes("UTF-8"));
@@ -107,19 +105,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void launchVeriffLibrary(@NonNull TokenResponse body) {
+    private void launchVeriffSDK(@NonNull TokenResponse body) {
         final String sessionToken = body.getVerification().getSessionToken();
         //enable logging for the library
         Veriff.setLoggingImplementation(Log.getInstance(MainActivity.class));
         Veriff.Builder veriffSDK = new Veriff.Builder(URL_STAGING, sessionToken);
-        // If this not specified, then reverts to the default colors
-        final ColorSchema schema = new ColorSchema.Builder()
-                .setControlsColor(ContextCompat.getColor(this, R.color.colorLibrary))
-                .build();
-        veriffSDK.setCustomColorSchema(schema);
-        // If not specified, then default gradient is used
-        veriffSDK.setBackgroundImage(R.drawable.city_tartu);
-
         veriffSDK.launch(MainActivity.this, REQUEST_VERIFF);
     }
 
@@ -132,9 +122,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement

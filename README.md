@@ -34,196 +34,13 @@
   ```
 </details>
 
-<details><summary>1.2 Veriff version 1.*</summary>
+<details><summary>1.2 Veriff SDK versions 1.* are no longer supported</summary>
+  Veriff SDK versions 1.* are no longer being supported, please integrate version 2.+ instead.
 
-  1.2.1. Create a libs folder under your application app folder and move the Veriff **.aar** file into the created directory.
+  To integrate Veriff into a new project, then see section [1.1 Veriff version 2.+](1.1-Veriff-version-2.+)
+  To upgrade from 1.* to 2.+ refer to section [3. Veriff SDK upgrade to 2.+](3.-Veriff-SDK-upgrade-to-2.+)
 
-![alt-text](https://github.com/Veriff/android-sample-app/blob/master/guide.jpg?raw=true)
-
-  1.2.2. Add the following repository to the root **build.gradle** file(needed for browser.io library):
-```
-repositories {
-   jcenter()
-   maven { url "http://dl.bintray.com/argo/sdk" }
-   ...
-}
-```
-  1.2.3. Edit your application module **build.gradle** file and add the following lines:
-```
-allprojects {
-   repositories {
-       jcenter()
-       flatDir {
-           dirs 'libs'
-       }
-   }
-}
-```
-  and under **depencies** in the same file add:
-  `compile(name:'veriff’, ext:'aar')` or `implementation(name:'veriff’, ext:'aar')` depending on your gradle version.
-  1.2.4. Make sure that the same application module **build.gradle** file dependencies block contains the following libraries:
-```
-dependencies {
-    …		
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support:support-media-compat:27.1.1'
-    implementation 'com.android.support:support-v4:27.1.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.android.support:design:27.1.1'
-    implementation 'io.probity.sdk:collector:1.0.0'
-    implementation 'io.jsonwebtoken:jjwt:0.6.0'
-
-    implementation "com.google.firebase:firebase-core:16.0.6"
-    implementation "com.google.firebase:firebase-messaging:17.3.4"
-
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
-    …
-	}
-```
-  1.2.5. The **minSdkVersion** for compiling with Veriff **SDK** is 19.
-  1.2.6. During the **build**, Android Studio might show the following error:
-```
-Duplicate files copied in APK META-INF/*
-```
-  Edit **build.gradle** and exclude file inside **android** configuration:
-```
-android {
-    …
-    packagingOptions {
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/LICENSE'
-    }
-}
-```
-  1.2.7. Check if the configurations are correct by rebuilding / running the project.
-
-
-## 1.3 Configure Firebase notification service for Veriff notifications to work.
-
-  1.3.1. Create **Two** classes in your application that extend **FirebaseInstanceIdService** and **FirebaseMessagingService** respectably. Sample classes are as follows:
-```java
-import com.google.firebase.iid.FirebaseInstanceIdService;
-import mobi.lab.veriff.service.FireBaseTokenUpdaterService;
-
-public class SampleFirebaseInstanceIdService extends FirebaseInstanceIdService {
-
-   @Override
-   public void onTokenRefresh() {
-       FireBaseTokenUpdaterService.start(this, FireBaseTokenUpdaterService.ACTION_SEND_TOKEN_IF_NEEDED, null);
-   }
-}
-```
-```java
-import android.content.Context;
-import android.os.PowerManager;
-import android.support.annotation.NonNull;
-import com.google.firebase.messaging.FirebaseMessagingService;
-import com.google.firebase.messaging.RemoteMessage;
-import mobi.lab.veriff.data.PushNotificationReply;
-import mobi.lab.veriff.data.VeriffConstants;
-import mobi.lab.veriff.sample.util.Log;
-import mobi.lab.veriff.service.VeriffFirebaseHandler;
-import mobi.lab.veriff.util.GeneralUtil;
-
-public class SampleFirebaseMessagingService extends FirebaseMessagingService {
-
-   private static final String TAG = SampleFirebaseMessagingService.class.getSimpleName();
-   private static final Log log = Log.getInstance(TAG);
-
-   private static final String WAKELOCK_KEY = "mobi.lab.veriff:wakelockKey";
-   private static final long WAKELOCK_TIMEOUT = 2 * 60 * 1000L;
-
-   private static volatile PowerManager.WakeLock wakeLock;
-
-   @Override
-   public void onMessageReceived(RemoteMessage remoteMessage) {
-       GeneralUtil.acquireWakeLock(getWakeLock(this), WAKELOCK_TIMEOUT);
-       try {
-           if (remoteMessage == null) {
-               log.d("onMessageReceived - message is null, aborting ..");
-               return;
-           }
-           log.d("onMessageReceived - from: " + remoteMessage.getFrom());
-
-           // Check if message contains a data payload.
-           if (remoteMessage.getData() != null && remoteMessage.getData().size() > 0) {
-               log.d("onMessageReceived - Message data payload: " + remoteMessage.getData());
-           } else {
-               log.w("onMessageReceived - Message has not data, aborting ..");
-               return;
-           }
-           handleMessage(remoteMessage);
-       } catch (Error e) {
-           log.w("onMessageReceived", e);
-       } finally {
-           GeneralUtil.releaseWakeLock(getWakeLock(this));
-       }
-   }
-
-   private static
-   @NonNull
-   PowerManager.WakeLock getWakeLock(@NonNull final Context context) {
-       if (wakeLock == null) {
-           final PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-           // Wake lock that ensures that the CPU is running. The screen might not be on.
-           wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKELOCK_KEY);
-       }
-       return wakeLock;
-   }
-
-   private void handleMessage(@NonNull final RemoteMessage remoteMessage) {
-       // If notification is intended for Veriff library, then client application notification handling is never called
-       if (!handleVeriffNotifications(remoteMessage)) {
-           handleClientApplicationNotifications(remoteMessage);
-       }
-   }
-
-   private boolean handleVeriffNotifications(@NonNull final RemoteMessage remoteMessage) {
-       PushNotificationReply reply = VeriffFirebaseHandler.handleNotification(remoteMessage, this);
-       log.d(reply.getState() + ", " + reply.getNotification());
-       return VeriffConstants.NOTIFICATION_HANDLED.equals(reply.getState());
-   }
-
-   private void handleClientApplicationNotifications(@NonNull final RemoteMessage remoteMessage) {
-       //TODO handle client application notifications here
-   }
-}
-```
-  The example files should be implemented as the example shows and should the **vendor application** wish to handle their own **Firebase notifications**, then these should be implemented under the method **handleClientApplicationNotifications**.
-
-  1.3.2 Open the application **manifest** and add there two services to the application bracket:
-
-```
-<!-- Implement Firebase notification service that handles Veriff notifications-->
-<service android:name=".service.SampleFirebaseMessagingService">
-   <intent-filter>
-       <action android:name="com.google.firebase.MESSAGING_EVENT" />
-   </intent-filter>
-</service>
-<!-- Implement FirebaseInstanceIdService -->
-<service android:name=".service.SampleFirebaseInstanceIdService">
-   <intent-filter>
-       <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-   </intent-filter>
-</service>
-```
-
-  1.3.3 Google Firebase for push notifications
-
-  Because the Veriff SDK uses push notifications we also have to set up an account in Google Firebase Cloud messaging. **If you don’t use Google Firebase Cloud Messaging for your application this step is not mandatory and Veriff can provide you with the necessary configuration files.** Please contact your supporting engineer and ask about this. 
-
-  1.3.3.1 Setup firebase messaging project in the Firebase console if you haven’t already ([Firebase console](https://console.firebase.google.com)) [Tutorial](https://firebase.google.com/docs/android/setup#manually_add_firebase)
-
-  1.3.3.2 Download a **google-services.json** file and copy this into your project's **module** folder, typically **app/**. Veriff library will use it to receive push notifications in order to let the user know that video verification is ready to start.
-
-  1.3.3.3 Copy the **Server key** from you project cloud messaging tab and **send it to your supporting contact at Veriff**. If you already are using cloud messaging and do not wish to give the same Server key to Veriff then you can just create a new server key and use that one. Veriff will use that Server key to send push notifications to the library included in SDK.
-
-</details>
-
-## Using the Veriff library
+## Using the Veriff SDK
 
 ### 2. Initializing SDK in project code
 
@@ -231,7 +48,7 @@ The verification process must be launched inside Vendor specific Activity class.
 
 Every Veriff SDK session is unique for a client. The session expires after 7 days automatically, but is valid until then. After the verification data is uploaded, the SDK v1.0 does not wait for the final verification result (async). The SDK v1.0 only notifies whether the verification data upload is successful or not.
 
-The verification result is sent to the Vendor server in the background. ( Reference for that is the API Spec document ). Veriff library sends callbacks to vendor mobile application via background service, onActivityResult and broadcasts. The most reliable callback method is the background service because it’s usually waken up by the Android system services. All the mentioned ways return the same status codes so the vendor application developer can choose the preferred method and ignore the other ones.
+The verification result is sent to the Vendor server in the background. ( Reference for that is the API Spec document ). Veriff SDK sends callbacks to vendor mobile application via background service, onActivityResult and broadcasts. The most reliable callback method is the background service because it’s usually waken up by the Android system services. All the mentioned ways return the same status codes so the vendor application developer can choose the preferred method and ignore the other ones.
 
 ## 2.1. Veriff SDK usage in **Vendor application activity**
 
@@ -244,7 +61,7 @@ veriffSDK.launch(MainActivity.this, REQUEST_VERIFF);
 ```
 2.1.2. To get callbacks via the background service then one would have to create a service which  extends **VeriffStatusUpdatesService**. Overwriting the method **onStatusChanged** will enable the developer to listen for different statuses coming from the Veriff SDK
 ```java
-public class VeriffLibraryStatusUpdatesService extends VeriffStatusUpdatesService {
+public class VeriffSDKStatusUpdatesService extends VeriffStatusUpdatesService {
    @Override
    protected void onStatusChanged(String sessionToken, int statusCode) {
        if (statusCode == VeriffConstants.STATUS_USER_FINISHED) {
@@ -258,7 +75,7 @@ public class VeriffLibraryStatusUpdatesService extends VeriffStatusUpdatesServic
        } else if (statusCode == VeriffConstants.STATUS_ERROR_NETWORK) {
            //network unavailable
        } else if (statusCode == VeriffConstants.STATUS_USER_CANCELED) {
-           //user closed library
+           //user closed SDK
        } else if (statusCode == VeriffConstants.STATUS_UNABLE_TO_ACCESS_CAMERA) {
            //we are unable to access phone camera (either access denied or there are no usable cameras)
        } else if (statusCode == VeriffConstants.STATUS_UNABLE_TO_RECORD_AUDIO) {
@@ -268,7 +85,7 @@ public class VeriffLibraryStatusUpdatesService extends VeriffStatusUpdatesServic
        } else if (statusCode == VeriffConstants.STATUS_OUT_OF_BUSINESS_HOURS) {
            //call was made out of business hours, there were no verification specialists to handle the request
        } else if (statusCode == VeriffConstants.STATUS_ERROR_SESSION) {
-           //invalid sessionToken was passed to the library
+           //invalid sessionToken was passed to the SDK
        } else if (statusCode == VeriffConstants.STATUS_DONE) {
            //verification specialist declined the session
        } else if (statusCode == VeriffConstants.STATUS_VIDEO_CALL_ENDED) {
@@ -280,14 +97,14 @@ public class VeriffLibraryStatusUpdatesService extends VeriffStatusUpdatesServic
 
   After the service is set up then it needs to be declared in the **application manifest**:
 ```
-<!-- Implement Veriff library updates service -->
-<service android:name=".service.VeriffLibraryStatusUpdatesService">
+<!-- Implement Veriff SDK updates service -->
+<service android:name=".service.VeriffSDKStatusUpdatesService">
    <intent-filter>
        <action android:name="me.veriff.STATUS_UPDATE" />
    </intent-filter>
 </service>
 ```
-2.1.3. For catching the SDK returning status in the activity override onActivityResult in vendor activity that starts the libraray:
+2.1.3. For catching the SDK returning status in the activity override onActivityResult in vendor activity that starts the SDK:
 ```java
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -306,7 +123,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
        } else if (statusCode == VeriffConstants.STATUS_ERROR_NETWORK) {
            //network unavailable
        } else if (statusCode == VeriffConstants.STATUS_USER_CANCELED) {
-           //user closed library
+           //user closed SDK
        } else if (statusCode == VeriffConstants.STATUS_UNABLE_TO_ACCESS_CAMERA) {
            //we are unable to access phone camera (either access denied or there are no usable cameras)
        } else if (statusCode == VeriffConstants.STATUS_UNABLE_TO_RECORD_AUDIO) {
@@ -316,7 +133,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
        } else if (statusCode == VeriffConstants.STATUS_OUT_OF_BUSINESS_HOURS) {
            //call was made out of business hours, there were no verification specialists to handle the request
        } else if (statusCode == VeriffConstants.STATUS_ERROR_SESSION) {
-           //invalid sessionToken was passed to the library
+           //invalid sessionToken was passed to the SDK
        } else if (statusCode == VeriffConstants.STATUS_DONE) {
            //verification specialist declined the session
        }
@@ -335,35 +152,39 @@ public class VeriffStatusReceiver extends BroadcastReceiver {
    public void onReceive(Context context, Intent intent) {
        Bundle extras = intent.getExtras();
        if (extras.containsKey(VeriffConstants.INTENT_EXTRA_STATUS)) {
-           int statusCode = intent.getIntExtra(VeriffConstants.INTENT_EXTRA_STATUS, Integer.MIN_VALUE);
-           String sessionToken = intent.getStringExtra(VeriffConstants.INTENT_EXTRA_SESSION_URL);
-
-           if (statusCode == VeriffConstants.STATUS_USER_FINISHED) {
-               //user finished whatever he/she was asked to do, there might be other callbacks coming after this one (for example if the images are still being uploaded in the background)
-           } else if (statusCode == VeriffConstants.STATUS_ERROR_NO_IDENTIFICATION_METHODS_AVAILABLE) {
-               //there are no identifications methods currently available
-           } else if (statusCode == VeriffConstants.STATUS_ERROR_SETUP) {
-               //issue with the provided vendor data
-           } else if (statusCode == VeriffConstants.STATUS_ERROR_UNKNOWN) {
-               //unidentified error
-           } else if (statusCode == VeriffConstants.STATUS_ERROR_NETWORK) {
-               //network unavailable
-           } else if (statusCode == VeriffConstants.STATUS_USER_CANCELED) {
-               //user closed library
-           } else if (statusCode == VeriffConstants.STATUS_UNABLE_TO_ACCESS_CAMERA) {
-               //we are unable to access phone camera (either access denied or there are no usable cameras)
-           } else if (statusCode == VeriffConstants.STATUS_UNABLE_TO_RECORD_AUDIO) {
-               //we are unable to access phone microphone
-           } else if (statusCode == VeriffConstants.STATUS_SUBMITTED) {
-               //SelfID photos were successfully uploaded
-           } else if (statusCode == VeriffConstants.STATUS_OUT_OF_BUSINESS_HOURS) {
-               //call was made out of business hours, there were no verification specialists to handle the request
-           } else if (statusCode == VeriffConstants.STATUS_ERROR_SESSION) {
-               //invalid sessionToken was passed to the library
-           } else if (statusCode == VeriffConstants.STATUS_DONE) {
-               //verification specialist declined the submitted data
+           String sessionToken = extras.getString(VeriffConstants.INTENT_EXTRA_SESSION_URL);
+           int status = extras.getInt(VeriffConstants.INTENT_EXTRA_STATUS);
+           if (status == VeriffConstants.STATUS_UNABLE_TO_ACCESS_CAMERA) {
+               //Veriff broadcast: camera permission missing
+               Toast.makeText(context, "Veriff broadcast: camera or permission missing", Toast.LENGTH_LONG).show();
+           } else if (status == VeriffConstants.STATUS_USER_FINISHED) {
+               //Veriff broadcast: finished
+               Toast.makeText(context, "Veriff broadcast: finished", Toast.LENGTH_LONG).show();
+           } else if (status == VeriffConstants.STATUS_USER_CANCELED) {
+               //Veriff broadcast: canceled
+               Toast.makeText(context, "Veriff broadcast: canceled", Toast.LENGTH_LONG).show();
+           } else if (status == VeriffConstants.STATUS_SUBMITTED) {
+               //Veriff broadcast: submitted
+               Toast.makeText(context, "Veriff broadcast: submitted", Toast.LENGTH_LONG).show();
+           } else if (status == VeriffConstants.STATUS_ERROR_SESSION) {
+               //Veriff broadcast: session expired
+               Toast.makeText(context, "Veriff broadcast: session expired", Toast.LENGTH_LONG).show();
+           } else if (status == VeriffConstants.STATUS_ERROR_NETWORK) {
+               //Veriff broadcast: network error
+               Toast.makeText(context, "Veriff broadcast: network error", Toast.LENGTH_LONG).show();
+           } else if (status == VeriffConstants.STATUS_ERROR_SETUP) {
+               //Veriff broadcast: setup error
+               Toast.makeText(context, "Veriff broadcast: setup error", Toast.LENGTH_LONG).show();
+           } else if (status == VeriffConstants.STATUS_ERROR_NO_IDENTIFICATION_METHODS_AVAILABLE) {
+               //Veriff broadcast: no ident methods available
+               Toast.makeText(context, "Veriff broadcast: no ident methods available", Toast.LENGTH_LONG).show();
+           } else if (status == VeriffConstants.STATUS_DONE) {
+               //Veriff broadcast: done
+               Toast.makeText(context, "Veriff broadcast: done", Toast.LENGTH_LONG).show();
+           } else if (status == VeriffConstants.STATUS_ERROR_UNKNOWN) {
+               //Veriff broadcast: unknown
+               Toast.makeText(context, "Veriff broadcast: unknown", Toast.LENGTH_LONG).show();
            }
-
        }
    }
 }
@@ -380,64 +201,23 @@ android:permission="${applicationId}.VERIFF_STATUS_BROADCAST_PERMISSION">
    </intent-filter>
 </receiver>
 ```
-## 2.2. Customisation of the Veriff library
 
-### TEMPORARILY DISABLED FUNCTIONALITY IN 2.0
+## 2.2. Adding logging
 
-  **Veriff library** enables **customisation of certain elements in the library views**. The customisation consists of mainly two things:
-
-  **1: Background image**
-  **2: Color resources via ColorSchema class object**
-
-
-2.2.1. Background image
-  During the initialization of Veriff library, there is a method in the **Veriff.Builder** called **setBackroundImage(int imageResourcePath)**. By setting an image resource integer value with this method it is possible to replace the default gradient background of the document selection screen.
-
-**Default gradient background** vs **Custom image background**
-  
-  <img src="https://github.com/Veriff/android-sample-app/blob/master/image.png" width="300">  <img src="https://github.com/Veriff/android-sample-app/blob/master/image%20(1).png" width="300">
-  
-2.2.1. Color resources
-  One more customisation possibility is by setting a **ColorSchema** object during the Veriff library initialization with **setCustomColorSchema(ColorSchema schema)** method.
-
-Example use of the ColorSchema object:
-
-```java
-ColorSchema schema = new ColorSchema.Builder()
-       		.setHeader(Color.TRANSPARENT, 1)
-       		.setBackground(Color.DKGRAY)
-       		.setFooter(Color.GRAY, 1)
-       		.setControlsColor(ContextCompat.getColor(this, R.color.colorAccent))
-       		.build();
-```
-
-**Header** - header object on top of some views. It needs two arguments, color resource(int) and opacity(double).
-
-**Background** - background on most views, takes one argument and that is the value of the color resource.
-
-**Footer** - bottom footer element on some views. It needs two arguments, color resource(int) and opacity (double).
-
-**Controls Color** - Most of the controls used in the application, needs one color resource as an argument.
-
-  When creating the ColorSchema object, specify the objects you wish to change, the ones that remain unchanged will fall back on the default Veriff colors. Only on the header it is possible to use the **Color.TRANSPARENT** value. 
-  For specifying a color it is possible to use either Color class values like Color.DKGRAY and Color.RED. Or as an alternative take values from colors.xml resource like this ```java ContextCompat.getColor(<context>, R.color.<your_color_resource_name>)```
-   
-## 2.3. Adding logging
-
-  To turn on logging, you simply add your logging implementation instance(instance of LogAccess class)to the library before launching library like this:
+  To turn on logging, you simply add your logging implementation instance(instance of LogAccess class)to the SDK before launching SDK like this:
 ```java
   Veriff.setLoggingImplementation(<Instance of your logging class>);
   Veriff.Builder veriffSDK = new Veriff.Builder(baseUrl, sessionToken);
   veriffSDK.launch(MainActivity.this, REQUEST_VERIFF);
 ```
 
-## Upgrading Veriff library from 1.* to 2.0
+## Upgrading Veriff SDK from 1.* to 2.+
 
-### 3. Veriff libraray upgrade to 2.0
+### 3. Veriff SDK upgrade to 2.+
 
-Veriff library 2.0 integration has changed significantly since 1.*. There are mayor changes in the library distribution where the library from now on is distributed via gradle import and many previously required services have been removed and trimmed down.
+Veriff SDK 2.+ integration has changed significantly since 1.*. There are mayor changes in the SDK distribution where the SDK from now on is distributed via gradle import and many previously required services have been removed and trimmed down.
 
-## 3.1 Remove Veriff library required Firebase code
+## 3.1 Remove Veriff SDK required Firebase code
 
 3.1.1 If your application uses Firebase notifications
 
@@ -473,7 +253,7 @@ if (!handleVeriffNotifications(remoteMessage)) {
 
 ## 3.2 Remove the dependency on the .aar file and replace it with the gradle import from Veriff maven repo
 
-  3.2.1 Remove the veriff library .aar file from the lib directory
+  3.2.1 Remove the veriff SDK .aar file from the lib directory
 
   3.2.2 If you are not using any other manually added libraries remove the lib directory and the  reference to the lib directory from the application build.gradle file.
 ``` java
@@ -520,18 +300,12 @@ if (!handleVeriffNotifications(remoteMessage)) {
   implementation 'org.greenrobot:eventbus:3.1.1'
 ```
 
-  3.2.5 Add the following line to the application section in the AndroidManifest
-
-``` java
-  tools:replace="android:label"
-```
-
-  3.2.6 Remove irrelevant return values from VeriffLibraryStatusUpdatedService and VeriffStatusReceiver
+  3.2.5 Remove irrelevant return values from VeriffSDKStatusUpdatedService and VeriffStatusReceiver
 
 ``` java
   VeriffConstants.STATUS_OUT_OF_BUSINESS_HOURS, VeriffConstants.STATUS_UNABLE_TO_RECORD_AUDIO and VeriffConstants.STATUS_VIDEO_CALL_ENDED
 ```
-  3.2.7 As a final step add the import for Veriff libary in the application build.gradle dependency list. It should contain the following two lines:
+  3.2.6 As a final step add the import for Veriff libary in the application build.gradle dependency list. It should contain the following two lines:
 
 ``` java
   implementation 'com.veriff:veriff-library:1.6.8@aar'
