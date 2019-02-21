@@ -1,0 +1,47 @@
+# Java Gradle CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-java/ for more details
+#
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/android:api-28-alpha
+
+    working_directory: ~/repo
+
+    environment:
+      API_SECRET: API_SECRET
+      GRADLE_ARGS: -PpreDexEnable=false -Pandroid.threadPoolSize=1 -Dorg.gradle.parallel=false -Dorg.gradle.daemon=false
+      GRADLE_MEM_LIMIT: -Dorg.gradle.jvmargs=-Xms512m -Xmx512m
+
+    steps:
+      - checkout
+
+      # calculate global checksums
+      - run: find . -name "build.gradle" | sort | xargs md5sum > /tmp/buildhash.txt
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "/tmp/buildhash.txt" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: ./gradlew $GRADLE_ARGS "$GRADLE_MEM_LIMIT" ":app:build"
+
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "/tmp/buildhash.txt" }}
+
+      - run:
+          name: prepare files for upload
+          command: |
+              mkdir /tmp/artifacts
+              cp app/build/outputs/apk/debug/app-debug.apk /tmp/artifacts
+              cp app/build/outputs/apk/release/app-release.apk /tmp/artifacts
+      - store_artifacts:
+          path: /tmp/artifacts
