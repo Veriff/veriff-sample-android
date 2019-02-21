@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String BASE_URL = "https://stagingapi.veriff.me";
     private static final String URL_STAGING = "https://staging.veriff.me/v1/";
 
-    private static final Gson GSON = new GsonBuilder().registerTypeAdapter(Date.class, new DateTypeAdapter()).registerTypeAdapter(TokenPayload.class, new TokenJsonSerializer()).create();
+    private static final Gson GSON = new GsonBuilder().registerTypeAdapter(Date.class, new DateTypeAdapter()).create();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
