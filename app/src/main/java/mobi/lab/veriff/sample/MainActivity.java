@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -50,8 +48,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationIcon(R.drawable.ic_settings);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSettingsActivity();
+            }
+        });
 
         Button button = findViewById(R.id.launch_button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +66,11 @@ public class MainActivity extends AppCompatActivity {
                 makeTokenRequestAndLaunchVeriff();
             }
         });
+        startSettingsActivity();
+    }
+
+    private void startSettingsActivity() {
+        android.util.Log.d("Tag", "Settings clicked");
     }
 
     private void makeTokenRequestAndLaunchVeriff() {
@@ -111,24 +122,6 @@ public class MainActivity extends AppCompatActivity {
         Veriff.setLoggingImplementation(Log.getInstance(MainActivity.class));
         Veriff.Builder veriffSDK = new Veriff.Builder(URL_STAGING, sessionToken);
         veriffSDK.launch(MainActivity.this, REQUEST_VERIFF);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private static Retrofit createRetrofit() {
