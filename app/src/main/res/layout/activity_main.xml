@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
+    android:background="@color/colorBackgroundMain"
     tools:context="mobi.lab.veriff.sample.MainActivity">
 
     <android.support.v7.widget.Toolbar
@@ -26,7 +26,7 @@
     </android.support.v7.widget.Toolbar>
 
     <TextView
-        android:text="Welcome to Veriff."
+        android:text="@string/main_welcome"
         style="@style/SampleText.title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
     <TextView
         android:id="@+id/main_description"
         style="@style/SampleText.16"
-        android:text="The easiest, safest and most convenient way to verify yourself."
+        android:text="@string/main_instruction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

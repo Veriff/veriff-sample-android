@@ -1,7 +1,9 @@
 package mobi.lab.veriff.sample;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -19,6 +21,7 @@ import mobi.lab.veriff.network.AcceptHeaderInterceptor;
 import mobi.lab.veriff.sample.data.TokenPayload;
 import mobi.lab.veriff.sample.data.TokenResponse;
 import mobi.lab.veriff.sample.loging.Log;
+import mobi.lab.veriff.util.LangUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -40,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private static Log log = Log.getInstance("Retrofit");
     private static final String BASE_URL = "https://stagingapi.veriff.me";
     private static final String URL_STAGING = "https://staging.veriff.me/v1/";
+    private static final int TOKEN_RESULT = 101;
 
     private static final Gson GSON = new GsonBuilder().registerTypeAdapter(Date.class, new DateTypeAdapter()).create();
 
@@ -63,17 +67,16 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                makeTokenRequestAndLaunchVeriff();
+                makeTokenRequest();
             }
         });
-        startSettingsActivity();
     }
 
     private void startSettingsActivity() {
-        android.util.Log.d("Tag", "Settings clicked");
+        startActivityForResult(SettingsActivity.createIntent(this), TOKEN_RESULT);
     }
 
-    private void makeTokenRequestAndLaunchVeriff() {
+    private void makeTokenRequest() {
         final TokenService tokenService = createRetrofit().create(TokenService.class);
         String pay = "{\"verification\":{\"document\":{\"number\":\"B01234567\",\"type\":\"ID_CARD\",\"country\":\"EE\"},\"additionalData\":{\"placeOfResidence\":\"Tartu\",\"citizenship\":\"EE\"},\"timestamp\":\"2018-12-12T11:02:05.261Z\",\"lang\":\"et\",\"features\":[\"selfid\"],\"person\":{\"firstName\":\"Tundmatu\",\"idNumber\":\"38508260269\",\"lastName\":\"Toomas\"}}}";
         TokenPayload load = GSON.fromJson(pay, TokenPayload.class);
@@ -84,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
                 if (response.isSuccessful() && response.code() == REQUEST_SUCCESSFUL && response.body() != null) {
-                    launchVeriffSDK(response.body());
+                    launchVeriffSDK(response.body().getVerification().getSessionToken());
                 }
                 else {
                     Toast.makeText(MainActivity.this, response.message(), Toast.LENGTH_LONG).show();
@@ -116,8 +119,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void launchVeriffSDK(@NonNull TokenResponse body) {
-        final String sessionToken = body.getVerification().getSessionToken();
+    private void launchVeriffSDK(@NonNull String sessionToken) {
         //enable logging for the library
         Veriff.setLoggingImplementation(Log.getInstance(MainActivity.class));
         Veriff.Builder veriffSDK = new Veriff.Builder(URL_STAGING, sessionToken);
@@ -149,6 +151,17 @@ public class MainActivity extends AppCompatActivity {
                     .build();
 
         return retrofit;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == TOKEN_RESULT) {
+            String sessionToken = SettingsActivity.readExtra(data);
+            if (!LangUtils.isStringEmpty(sessionToken)) {
+                launchVeriffSDK(sessionToken);
+            }
+        }
     }
 
     private interface TokenService {

@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="mobi.lab.veriff.sample">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.hardware.camera" />
+    <uses-permission android:name="android.hardware.camera.autofocus" />
     <!-- "signature" permission granted automatically by system, without notifying user. -->
     <uses-permission android:name="${applicationId}.VERIFF_STATUS_BROADCAST_PERMISSION" />
     <!-- Implement you own BroadcastReceiver to track VeriffSDK status, should be protected by "signature" permission -->
@@ -30,6 +33,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".SettingsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <receiver
             android:name=".receiver.VeriffStatusReceiver"
