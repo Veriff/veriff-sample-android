@@ -10,7 +10,7 @@
 
 ### 1. Add sdk to a project
 
-<details><summary>1.1 Veriff version 2.+</summary>
+<details><summary> 1.1 Veriff version 2.+</summary>
   1.1.1 Add two new maven repository destination under the root build.gradle repositories tag in allprojects bracket. It should contain the following two maven repositories:
 
   ``` java
@@ -37,8 +37,10 @@
 <details><summary>1.2 Veriff SDK versions 1.* are no longer supported</summary>
   Veriff SDK versions 1.* are no longer being supported, please integrate version 2.+ instead.
 
-  To integrate Veriff into a new project, then see section [1.1 Veriff version 2.+](1.1-Veriff-version-2.+)
-  To upgrade from 1.* to 2.+ refer to section [3. Veriff SDK upgrade to 2.+](3.-Veriff-SDK-upgrade-to-2.+)
+  To integrate Veriff into a new project, then see the previous section 1.1 on how to integrate
+  To upgrade from 1.* to 2.+ refer to section [on upgrading Veriff](#upgrading-veriff)
+
+</details>
 
 ## Using the Veriff SDK
 
@@ -210,6 +212,8 @@ android:permission="${applicationId}.VERIFF_STATUS_BROADCAST_PERMISSION">
   Veriff.Builder veriffSDK = new Veriff.Builder(baseUrl, sessionToken);
   veriffSDK.launch(MainActivity.this, REQUEST_VERIFF);
 ```
+
+# Upgrading Veriff
 
 ## Upgrading Veriff SDK from 1.* to 2.+
 
