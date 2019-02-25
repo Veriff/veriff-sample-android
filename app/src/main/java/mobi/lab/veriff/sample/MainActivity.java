@@ -72,6 +72,20 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == TOKEN_RESULT) {
+            String sessionToken = SettingsActivity.readExtra(data);
+            if (!LangUtils.isStringEmpty(sessionToken)) {
+                launchVeriffSDK(sessionToken);
+            } else {
+                Toast.makeText(MainActivity.this, "No token available, try again", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
     private void startSettingsActivity() {
         startActivityForResult(SettingsActivity.createIntent(this), TOKEN_RESULT);
     }
@@ -151,17 +165,6 @@ public class MainActivity extends AppCompatActivity {
                     .build();
 
         return retrofit;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == TOKEN_RESULT) {
-            String sessionToken = SettingsActivity.readExtra(data);
-            if (!LangUtils.isStringEmpty(sessionToken)) {
-                launchVeriffSDK(sessionToken);
-            }
-        }
     }
 
     private interface TokenService {

@@ -49,6 +49,7 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <EditText
+            android:id="@+id/settings_token_edit"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -62,7 +63,18 @@
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:src="@drawable/ic_qr"
+            android:foreground="?attr/selectableItemBackground"
             android:padding="12dp"/>
+
+        <ImageView
+            android:id="@+id/settings_go"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="@drawable/button"
+            android:src="@drawable/ic_forward"
+            android:foreground="?attr/selectableItemBackground"
+            android:padding="12dp"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

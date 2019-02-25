@@ -11,8 +11,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
@@ -22,6 +25,7 @@ import java.util.Arrays;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 public class SettingsActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
 
@@ -30,14 +34,17 @@ public class SettingsActivity extends AppCompatActivity implements ZXingScannerV
 
     private ZXingScannerView qrScanner;
     private boolean isScanning = false;
+    private View qrButton;
+    private View forwardButton;
+    private EditText tokenEditText;
 
     public static Intent createIntent(@NonNull Context context) {
         return new Intent(context, SettingsActivity.class);
     }
 
-    public static String readExtra(@NonNull Intent intent) {
-        if (intent.hasExtra(RESULT_TOKEN)) {
-            return intent.getStringExtra(RESULT_TOKEN);
+    public static String readExtra(@NonNull Intent data) {
+        if (data.hasExtra(RESULT_TOKEN)) {
+            return data.getStringExtra(RESULT_TOKEN);
         } else {
             return  null;
         }
@@ -49,53 +56,47 @@ public class SettingsActivity extends AppCompatActivity implements ZXingScannerV
 
         setContentView(R.layout.activity_settings);
         Toolbar toolbar = findViewById(R.id.settings_toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_settings);
+        tokenEditText = findViewById(R.id.settings_token_edit);
+        qrScanner = findViewById(R.id.settings_scanner);
+        forwardButton = findViewById(R.id.settings_go);
+        qrButton = findViewById(R.id.settings_scan);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setNavigationIcon(R.drawable.ic_settings);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
-        qrScanner = findViewById(R.id.settings_scanner);
+
+        tokenEditText.addTextChangedListener(new SettingsTextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (count > 0) {
+                    showForward(true);
+                } else {
+                    showForward(false);
+                }
+            }
+        });
+
         setScannerProperties();
-        findViewById(R.id.settings_scan).setOnClickListener(new View.OnClickListener() {
+        forwardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                returnResult();
+            }
+        });
+        qrButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 isScanning = true;
                 startCamera();
             }
         });
-    }
-
-    private void startCamera() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST);
-                return;
-            }
-        }
-        qrScanner.setVisibility(View.VISIBLE);
-        qrScanner.startCamera();
-        qrScanner.setResultHandler(this);
-    }
-
-    private void stopCamera() {
-        qrScanner.stopCamera();
-        qrScanner.setVisibility(GONE);
-
-    }
-
-    private void setScannerProperties() {
-        qrScanner.setFormats(Arrays.asList(BarcodeFormat.QR_CODE));
-        qrScanner.setAutoFocus(true);
-        qrScanner.setLaserColor(R.color.colorAccent);
-        qrScanner.setMaskColor(R.color.colorAccent);
-        if (Build.MANUFACTURER.equalsIgnoreCase("HUAWEI")) {
-            qrScanner.setAspectTolerance(0.5f);
-        }
-        qrScanner.setResultHandler(this);
     }
 
     @Override
@@ -123,10 +124,72 @@ public class SettingsActivity extends AppCompatActivity implements ZXingScannerV
     @Override
     public void handleResult(Result result) {
         if (!TextUtils.isEmpty(result.getText())) {
-            Intent resultIntent = new Intent();
-            resultIntent.putExtra(RESULT_TOKEN, result.getText());
-            setResult(RESULT_OK, resultIntent);
-            finish();
+            tokenEditText.setText(result.getText());
+            stopCamera();
+        }
+    }
+
+    private void showForward(boolean b) {
+        if (b) {
+            qrButton.setVisibility(GONE);
+            forwardButton.setVisibility(VISIBLE);
+        } else {
+            qrButton.setVisibility(VISIBLE);
+            forwardButton.setVisibility(GONE);
+        }
+    }
+
+    private void startCamera() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST);
+                return;
+            }
+        }
+        qrScanner.setVisibility(VISIBLE);
+        qrScanner.startCamera();
+        qrScanner.setResultHandler(this);
+    }
+
+    private void stopCamera() {
+        qrScanner.stopCamera();
+        qrScanner.setVisibility(GONE);
+
+    }
+
+    private void setScannerProperties() {
+        qrScanner.setFormats(Arrays.asList(BarcodeFormat.QR_CODE));
+        qrScanner.setAutoFocus(true);
+        qrScanner.setLaserColor(R.color.colorAccent);
+        qrScanner.setMaskColor(R.color.colorAccent);
+        if (Build.MANUFACTURER.equalsIgnoreCase("HUAWEI")) {
+            qrScanner.setAspectTolerance(0.5f);
+        }
+        qrScanner.setResultHandler(this);
+    }
+
+    private void returnResult() {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra(RESULT_TOKEN, tokenEditText.getText().toString());
+        setResult(RESULT_OK, resultIntent);
+        finish();
+    }
+
+    private class SettingsTextWatcher implements TextWatcher {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
         }
     }
 }
