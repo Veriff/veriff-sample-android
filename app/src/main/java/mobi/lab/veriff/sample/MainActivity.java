@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == TOKEN_RESULT) {
+        if (requestCode == TOKEN_RESULT && resultCode == RESULT_OK) {
             String sessionToken = SettingsActivity.readExtra(data);
             if (!LangUtils.isStringEmpty(sessionToken)) {
                 launchVeriffSDK(sessionToken);

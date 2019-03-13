@@ -13,9 +13,9 @@ android {
     signingConfigs {
         releaseSigning {
             storeFile file('signing/release.jks')
-            storePassword 'veriff1234'
-            keyAlias 'veriff'
-            keyPassword 'veriff1234'
+            storePassword System.getenv("VERIFF_DEMO_SIGNING_KEYSTORE_PW")
+            keyAlias System.getenv("VERIFF_DEMO_SIGNING_ALIAS")
+            keyPassword System.getenv("VERIFF_DEMO_SIGNING_PW")
         }
         defaultSigning {
             storeFile file('signing/debug.jks')

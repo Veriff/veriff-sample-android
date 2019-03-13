@@ -36,6 +36,7 @@ public class SettingsActivity extends AppCompatActivity implements ZXingScannerV
     private boolean isScanning = false;
     private View qrButton;
     private View forwardButton;
+    private View closeButton;
     private EditText tokenEditText;
 
     public static Intent createIntent(@NonNull Context context) {
@@ -56,15 +57,16 @@ public class SettingsActivity extends AppCompatActivity implements ZXingScannerV
 
         setContentView(R.layout.activity_settings);
         Toolbar toolbar = findViewById(R.id.settings_toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_settings);
         tokenEditText = findViewById(R.id.settings_token_edit);
         qrScanner = findViewById(R.id.settings_scanner);
         forwardButton = findViewById(R.id.settings_go);
         qrButton = findViewById(R.id.settings_scan);
+        closeButton = findViewById(R.id.settings_close);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        closeButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -191,5 +193,11 @@ public class SettingsActivity extends AppCompatActivity implements ZXingScannerV
         public void afterTextChanged(Editable s) {
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_CANCELED);
+        finish();
     }
 }
