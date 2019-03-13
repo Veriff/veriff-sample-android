@@ -22,9 +22,9 @@ jobs:
 
       # calculate global checksums
       - run: find . -name "build.gradle" | sort | xargs md5sum > /tmp/buildhash.txt
-      - run: echo $VERIFF_DEMO_KEYSTORE | base64 -d > .app/signing/release.jks
+      - run: base64 -d <<< $VERIFF_DEMO_KEYSTORE > app/signing/release.jks
 
-      # Download and cache dependencies
+    # Download and cache dependencies
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "/tmp/buildhash.txt" }}
