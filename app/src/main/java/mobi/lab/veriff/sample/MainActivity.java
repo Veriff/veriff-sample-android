@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_VERIFF = 8000;
     private static final int REQUEST_SUCCESSFUL = 201;
     private static Log log = Log.getInstance("Retrofit");
-    private static final String BASE_URL = "https://stagingapi.veriff.me";
-    private static final String URL_STAGING = "https://staging.veriff.me/v1/";
+    private static final String BASE_URL = "https://front3.staging.vrff.io/";
+    private static final String URL_STAGING = "https://front3.staging.vrff.io/";
     private static final int TOKEN_RESULT = 101;
 
     private static final Gson GSON = new GsonBuilder().registerTypeAdapter(Date.class, new DateTypeAdapter()).create();
