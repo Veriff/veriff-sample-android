@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:gravity="center"
-        android:background="@color/white"
+        android:background="@color/vrffWhite"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -30,7 +30,7 @@
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_close"
+            android:src="@drawable/vrff_ic_close"
             android:foreground="?attr/selectableItemBackground"
             android:layout_gravity="end"/>
 
