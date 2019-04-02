@@ -48,7 +48,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.veriff:veriff-library:2.0.0@aar'
+    implementation 'com.veriff:veriff-library:2.1.0@aar'
     implementation 'io.probity.sdk:collector:1.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.android.support:appcompat-v7:28.0.0'
