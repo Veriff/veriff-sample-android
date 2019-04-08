@@ -29,7 +29,7 @@
     1.1.2 Add two dependency imports in the application build.gradle dependency list:
 
   ``` java
-    implementation 'com.veriff:veriff-library:1.6.8@aar'
+    implementation 'com.veriff:veriff-library:2.1.0@aar'
     implementation 'io.probity.sdk:collector:1.0.0'
   ```
 </details>

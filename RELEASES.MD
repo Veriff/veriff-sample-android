@@ -1,5 +1,13 @@
 ### Latest Android SDK releases
 
+<details><summary>Release 2.1.0.</summary>
+    <ul>
+	    <li>WebRTC beta support with a fallback</l>
+    	<li>Event tracking for business funnel</li>
+        <li>Implemented crash reporting</li>
+   	    <li>Improved performance while taking snapshots</li>
+    </ul>
+</details>
 <details><summary>Release 2.0.0.</summary>
     <ul>
 	    <li>New design</l>
