@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.util.Date;
 
@@ -41,9 +43,11 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_VERIFF = 8000;
     private static final int REQUEST_SUCCESSFUL = 201;
     private static Log log = Log.getInstance("Retrofit");
-    private static final String BASE_URL = "https://front3.staging.vrff.io/";
     private static final String URL_STAGING = "https://front3.staging.vrff.io/";
     private static final int TOKEN_RESULT = 101;
+
+    private String sessionToken;
+    private String baseUrl = URL_STAGING;
 
     private static final Gson GSON = new GsonBuilder().registerTypeAdapter(Date.class, new DateTypeAdapter()).create();
 
@@ -77,7 +81,9 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == TOKEN_RESULT && resultCode == RESULT_OK) {
-            String sessionToken = SettingsActivity.readExtra(data);
+            String contnts = SettingsActivity.readExtra(data);
+            QrCodeContentsParser parser = new QrCodeContentsParser(contnts);
+            parser.parse();
             if (!LangUtils.isStringEmpty(sessionToken)) {
                 launchVeriffSDK(sessionToken);
             } else {
@@ -136,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
     private void launchVeriffSDK(@NonNull String sessionToken) {
         //enable logging for the library
         Veriff.setLoggingImplementation(Log.getInstance(MainActivity.class));
-        Veriff.Builder veriffSDK = new Veriff.Builder(URL_STAGING, sessionToken);
+        Veriff.Builder veriffSDK = new Veriff.Builder(baseUrl, sessionToken);
         veriffSDK.launch(MainActivity.this, REQUEST_VERIFF);
     }
 
@@ -159,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                     .build();
 
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(URL_STAGING)
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create(GSON))
                     .build();
@@ -175,6 +181,43 @@ public class MainActivity extends AppCompatActivity {
         })
         @POST("/v1/sessions")
         Call<TokenResponse> getToken(@Header("X-SIGNATURE") String signature, @Body TokenPayload payload);
+    }
+
+    private class QrCodeContentsParser {
+        String contents;
+        URL url;
+
+        QrCodeContentsParser(String contents) {
+            this.contents = contents;
+            this.url = createUrl(contents);
+        }
+
+        private URL createUrl(String contents) {
+            try {
+                return new URL(contents);
+            } catch (MalformedURLException e) {
+                return null;
+            }
+        }
+
+        void parse() {
+            if (isUrl()) {
+                // Demo interface QR codes contain host and session token
+                setHostAndTokenFromUrl();
+            } else {
+                // Back office QR codes only contain session token
+                sessionToken = contents;
+            }
+        }
+
+        private boolean isUrl() {
+            return url != null;
+        }
+
+        private void setHostAndTokenFromUrl() {
+            baseUrl = url.getProtocol() + "://" + url.getHost() + "/";
+            sessionToken = url.getPath().split("/")[2];
+        }
     }
 
 }
