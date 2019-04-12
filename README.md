@@ -29,7 +29,7 @@
     1.1.2 Add two dependency imports in the application build.gradle dependency list:
 
   ``` java
-    implementation 'com.veriff:veriff-library:2.1.0'
+    implementation 'com.veriff:veriff-library:2.1.1'
     implementation 'io.probity.sdk:collector:1.0.0'
   ```
 </details>
@@ -312,7 +312,7 @@ if (!handleVeriffNotifications(remoteMessage)) {
   3.2.6 As a final step add the import for Veriff libary in the application build.gradle dependency list. It should contain the following two lines:
 
 ``` java
-  implementation 'com.veriff:veriff-library:2.1.0'
+  implementation 'com.veriff:veriff-library:2.1.1'
   implementation 'io.probity.sdk:collector:1.0.0'
 ```
 
