@@ -4,7 +4,7 @@
 
 ### Latest Android SDK releases
 
-[Releases](https://github.com/Veriff/android-sample-app/blob/master/RELEASES.MD)
+[Releases](https://github.com/Veriff/veriff-sample-android/blob/master/RELEASES.MD)
 
 ## Step-By-Step integration guide
 
