@@ -1,20 +1,32 @@
 ### Latest Android SDK releases
-
+<details><summary>Release 2.1.1</summary>
+<ul>
+	<li>WebRTC production ready</li>
+	<li>Match camera and image preview scaling (camera preview was zoomed in)</li>
+	<li>Focus camera on screen touch</li>
+	<li>Fix video rotation in Backoffice</li>
+	<li>Event tracking for business funnel</li>
+	<li>Implemented in-house crash reporting</li>
+	<li>Improved performance while taking snapshots</li>
+	<li>Always take and upload 2 pictures per step</li>
+	<li>Added Czech and Lithuanian language support</li>
+</ul>
+</details>
 <details><summary>Release 2.1.0.</summary>
-    <ul>
-	    <li>WebRTC beta support with a fallback</l>
-    	<li>Event tracking for business funnel</li>
-        <li>Implemented crash reporting</li>
-   	    <li>Improved performance while taking snapshots</li>
-    </ul>
+<ul>
+	<li>WebRTC beta support with a fallback</li>
+	<li>Event tracking for business funnel</li>
+	<li>Implemented crash reporting</li>
+	<li>Improved performance while taking snapshots</li>
+</ul>
 </details>
 <details><summary>Release 2.0.0.</summary>
-    <ul>
-	    <li>New design</l>
-    	<li>Integration changes</li>
+<ul>
+	<li>New design</l>
+	<li>Integration changes</li>
         <li>Reduced library size</li>
-   	    <li>Optimizations</li>
-    </ul>
+	<li>Optimizations</li>
+</ul>
 </details>
 <details><summary>Release 1.6.8.</summary>
     <ul>
