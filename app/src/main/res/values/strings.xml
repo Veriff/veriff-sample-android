@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DemoVeriff</string>
+    <string name="app_name">Veriff Demo</string>
     <string name="action_settings">Settings</string>
     <string name="launch_demo">Try Veriff</string>
     <string name="main_welcome">Welcome to Veriff.</string>
