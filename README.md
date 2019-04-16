@@ -1,6 +1,6 @@
 <img src="https://github.com/Veriff/android-sample-app/blob/master/veriff-logo.png" width="300">
 
-# Veriff sample app for Android
+# Veriff Android demo app for Sales
 
 ### Latest Android SDK releases
 

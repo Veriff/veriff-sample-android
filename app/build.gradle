@@ -3,11 +3,11 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "mobi.lab.veriff.sample"
+        applicationId "mobi.lab.veriff.demo"
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
-        versionName "2.0.0"
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
