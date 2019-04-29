@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("mobi.lab.veriff.sample", appContext.getPackageName());
+        assertEquals("com.veriff.demo", appContext.getPackageName());
     }
 }
