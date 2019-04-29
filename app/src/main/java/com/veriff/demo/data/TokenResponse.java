@@ -1,4 +1,4 @@
-package mobi.lab.veriff.sample.data;
+package com.veriff.demo.data;
 
 public class TokenResponse {
 

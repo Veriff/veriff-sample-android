@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundSettings"
-    tools:context="mobi.lab.veriff.sample.SettingsActivity">
+    tools:context="com.veriff.demo.SettingsActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/settings_toolbar"

@@ -1,4 +1,4 @@
-package mobi.lab.veriff.sample;
+package com.veriff.demo;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

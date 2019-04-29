@@ -1,4 +1,4 @@
-package mobi.lab.veriff.sample;
+package com.veriff.demo;
 
 import android.Manifest;
 import android.content.Context;

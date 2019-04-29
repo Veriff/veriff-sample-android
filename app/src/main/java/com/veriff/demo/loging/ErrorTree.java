@@ -1,4 +1,4 @@
-package mobi.lab.veriff.sample.loging;
+package com.veriff.demo.loging;
 
 // Checkstyle off: RegexpSinglelineJava
 
