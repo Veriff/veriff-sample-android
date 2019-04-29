@@ -68,3 +68,17 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
+
+//It will create a new task(s) based on your application variants within (run) group
+//sample: ./gradlew installRunDebug
+//sample: ./gradlew installRunStagDebug
+project.afterEvaluate {
+    android.applicationVariants.all { variant ->
+        task "installRun${variant.name.capitalize()}"(type: Exec, dependsOn: "install${variant.name.capitalize()}", group: "run") {
+            commandLine = ["adb", "shell", "monkey", "-p", variant.applicationId + " 1"]
+            doLast {
+                println "Launching ${variant.applicationId}"
+            }
+        }
+    }
+}
