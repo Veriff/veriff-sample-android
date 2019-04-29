@@ -1,4 +1,4 @@
-package mobi.lab.veriff.sample.receiver;
+package com.veriff.demo.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

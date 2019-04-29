@@ -1,4 +1,4 @@
-package mobi.lab.veriff.sample;
+package com.veriff.demo;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -13,6 +13,9 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.veriff.demo.data.TokenPayload;
+import com.veriff.demo.data.TokenResponse;
+import com.veriff.demo.loging.Log;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -22,9 +25,7 @@ import java.util.Date;
 import mobi.lab.veriff.data.ColorSchema;
 import mobi.lab.veriff.data.Veriff;
 import mobi.lab.veriff.network.AcceptHeaderInterceptor;
-import mobi.lab.veriff.sample.data.TokenPayload;
-import mobi.lab.veriff.sample.data.TokenResponse;
-import mobi.lab.veriff.sample.loging.Log;
+
 import mobi.lab.veriff.util.LangUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -38,7 +39,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
-import static mobi.lab.veriff.sample.BuildConfig.API_SECRET;
+import static com.veriff.demo.BuildConfig.API_SECRET;
 
 public class MainActivity extends AppCompatActivity {
 

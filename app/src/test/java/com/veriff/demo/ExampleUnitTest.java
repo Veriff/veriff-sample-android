@@ -1,4 +1,4 @@
-package mobi.lab.veriff.sample;
+package com.veriff.demo;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import java.util.Date;
 
-import mobi.lab.veriff.sample.data.TokenPayload;
+import com.veriff.demo.data.TokenPayload;
 
 /**
  * Example local unit test, which will execute on the development machine (host).

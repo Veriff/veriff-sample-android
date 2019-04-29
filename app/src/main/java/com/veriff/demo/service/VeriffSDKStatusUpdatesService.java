@@ -1,4 +1,4 @@
-package mobi.lab.veriff.sample.service;
+package com.veriff.demo.service;
 
 import mobi.lab.veriff.data.VeriffConstants;
 import mobi.lab.veriff.service.VeriffStatusUpdatesService;
