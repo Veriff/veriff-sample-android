@@ -1,9 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".login.LoginActivity">
+    android:orientation="vertical"
+    tools:context=".login.LoginActivity"
+    android:padding="@dimen/vrff_spacing_8"
+    android:gravity="center_vertical">
 
-</android.support.constraint.ConstraintLayout>
+
+    <EditText
+        android:id="@+id/txtUserEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/str_hint_email"
+        android:inputType="textEmailAddress"/>
+
+
+    <EditText
+        android:id="@+id/txtUserPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/vrff_spacing_8"
+        android:hint="@string/str_hint_password"
+        android:inputType="textPassword"/>
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/vrff_spacing_8"
+        android:text="@string/str_login"/>
+
+    <TextView
+        android:id="@+id/txtSkipLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/vrff_spacing_8"
+        android:gravity="center"
+        android:text="@string/str_skip_login"/>
+
+
+
+</LinearLayout>
