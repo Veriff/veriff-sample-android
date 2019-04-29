@@ -1,5 +1,7 @@
 package com.veriff.demo;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -230,6 +232,11 @@ public class MainActivity extends AppCompatActivity {
             baseUrl = url.getProtocol() + "://" + url.getHost() + "/";
             sessionToken = url.getPath().split("/")[2];
         }
+    }
+
+    public static void start(Activity activity) {
+        Intent starter = new Intent(activity, MainActivity.class);
+        activity.startActivity(starter);
     }
 
 }
