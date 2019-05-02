@@ -1,4 +1,9 @@
 ### Latest Android SDK releases
+<details><summary>Release 2.2.1</summary>
+<ul>
+	<li>Added support for preselected country and document (Fixes #3)</li>
+</ul>
+</details>
 <details><summary>Release 2.1.1</summary>
 <ul>
 	<li>WebRTC production ready</li>
