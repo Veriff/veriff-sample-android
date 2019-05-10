@@ -1,4 +1,14 @@
 ### Latest Android SDK releases
+<details><summary>Release 2.3.0</summary>
+<ul>
+	<li>Added support for Inflow Feedback</li>
+	<li>Added permission for foreground service</li>
+	<li>Fixed camera issues with Pixel phones</li>
+	<li>Bundled proguard rules with the SDK</li>	
+	<li>Fixed aspect ratio issue for legacy flow</li>
+	<li>Added logging for WebRTC errors</li>
+</ul>
+</details>
 <details><summary>Release 2.2.1</summary>
 <ul>
 	<li>Added support for preselected country and document (Fixes #3)</li>
