@@ -3,10 +3,10 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.veriff.demo"
+        applicationId "mobi.lab.veriff.demo"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 1
+        versionCode 2
         versionName "2.3.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
