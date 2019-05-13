@@ -1,11 +1,8 @@
 package com.veriff.demo;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,21 +10,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.veriff.demo.data.TokenPayload;
 import com.veriff.demo.data.TokenResponse;
 import com.veriff.demo.loging.Log;
+import com.veriff.demo.service.TokenService;
+import com.veriff.demo.utils.GeneralUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.MessageDigest;
-import java.util.Date;
 
-import mobi.lab.veriff.data.ColorSchema;
-import mobi.lab.veriff.data.Veriff;
 import mobi.lab.veriff.network.AcceptHeaderInterceptor;
-
 import mobi.lab.veriff.util.LangUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -36,25 +28,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Body;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.POST;
 
 import static com.veriff.demo.BuildConfig.API_SECRET;
 
 public class MainActivity extends AppCompatActivity {
-
-    private static final int REQUEST_VERIFF = 8000;
-    private static final int REQUEST_SUCCESSFUL = 201;
     private static Log log = Log.getInstance("Retrofit");
-    private static final String URL_STAGING = "https://front3.staging.vrff.io/";
-    private static final int TOKEN_RESULT = 101;
 
     private String sessionToken;
-    private String baseUrl = URL_STAGING;
+    private String baseUrl = AppStatics.getURL_STAGING();
 
-    private static final Gson GSON = new GsonBuilder().registerTypeAdapter(Date.class, new DateTypeAdapter()).create();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,12 +67,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == TOKEN_RESULT && resultCode == RESULT_OK) {
-            String contnts = SettingsActivity.readExtra(data);
-            QrCodeContentsParser parser = new QrCodeContentsParser(contnts);
+        if (requestCode == AppStatics.getTOKEN_RESULT() && resultCode == RESULT_OK) {
+            String contents = SettingsActivity.readExtra(data);
+            QrCodeContentsParser parser = new QrCodeContentsParser(contents);
             parser.parse();
             if (!LangUtils.isStringEmpty(sessionToken)) {
-                launchVeriffSDK(sessionToken);
+                GeneralUtils.launchVeriffSDK(sessionToken, MainActivity.this, baseUrl);
             } else {
                 Toast.makeText(MainActivity.this, "No token available, try again", Toast.LENGTH_LONG).show();
             }
@@ -98,23 +80,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startSettingsActivity() {
-        startActivityForResult(SettingsActivity.createIntent(this), TOKEN_RESULT);
+        startActivityForResult(SettingsActivity.createIntent(this), AppStatics.getTOKEN_RESULT());
     }
 
     private void makeTokenRequest() {
         final TokenService tokenService = createRetrofit().create(TokenService.class);
         String pay = "{\"verification\":{\"document\":{\"number\":\"B01234567\",\"type\":\"ID_CARD\",\"country\":\"EE\"},\"additionalData\":{\"placeOfResidence\":\"Tartu\",\"citizenship\":\"EE\"},\"timestamp\":\"2018-12-12T11:02:05.261Z\",\"lang\":\"et\",\"features\":[\"selfid\"],\"person\":{\"firstName\":\"Tundmatu\",\"idNumber\":\"38508260269\",\"lastName\":\"Toomas\"}}}";
-        TokenPayload load = GSON.fromJson(pay, TokenPayload.class);
-        String toBeHashed =  GSON.toJson(load) + API_SECRET;
-        String signature = sha256(toBeHashed);
+        TokenPayload load = AppStatics.getGSON().fromJson(pay, TokenPayload.class);
+        String toBeHashed = AppStatics.getGSON().toJson(load) + API_SECRET;
+        String signature = GeneralUtils.sha256(toBeHashed);
 
         tokenService.getToken(signature, load).enqueue(new Callback<TokenResponse>() {
             @Override
             public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
-                if (response.isSuccessful() && response.code() == REQUEST_SUCCESSFUL && response.body() != null) {
-                    launchVeriffSDK(response.body().getVerification().getSessionToken());
-                }
-                else {
+                if (response.isSuccessful() && response.code() == AppStatics.getREQUEST_SUCCESSFUL() && response.body() != null) {
+                    GeneralUtils.launchVeriffSDK(response.body().getVerification().getSessionToken(),
+                            MainActivity.this, baseUrl);
+                } else {
                     Toast.makeText(MainActivity.this, response.message(), Toast.LENGTH_LONG).show();
                 }
             }
@@ -124,40 +106,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Something went wrong, please contact development team", Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    private static String sha256(String base) {
-        try{
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(base.getBytes("UTF-8"));
-            StringBuffer hexString = new StringBuffer();
-
-            for (int i = 0; i < hash.length; i++) {
-                String hex = Integer.toHexString(0xff & hash[i]);
-                if(hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-
-            return hexString.toString().toUpperCase();
-        } catch(Exception ex){
-            throw new RuntimeException(ex);
-        }
-    }
-
-    private void launchVeriffSDK(@NonNull String sessionToken) {
-        final ColorSchema schema = new ColorSchema.Builder()
-                .setHeader(Color.TRANSPARENT, 1)
-                .setBackground(Color.DKGRAY)
-                .setFooter(Color.GRAY, 1)
-                //.setControlsColor(ContextCompat.getColor(this, R.color.red))
-                .build();
-
-        //enable logging for the library
-        Veriff.setLoggingImplementation(Log.getInstance(MainActivity.class));
-        Veriff.Builder veriffSDK = new Veriff.Builder(baseUrl, sessionToken);
-        veriffSDK.setCustomColorSchema(schema);
-
-        veriffSDK.launch(MainActivity.this, REQUEST_VERIFF);
     }
 
     private static Retrofit createRetrofit() {
@@ -172,29 +120,19 @@ public class MainActivity extends AppCompatActivity {
         OkHttpClient okHttpClient;
         Retrofit retrofit;
 
-            // create regular retrofit client
-            okHttpClient = new OkHttpClient.Builder()
-                    .addInterceptor(new AcceptHeaderInterceptor())
-                    .addInterceptor(logInterceptor)
-                    .build();
+        // create regular retrofit client
+        okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(new AcceptHeaderInterceptor())
+                .addInterceptor(logInterceptor)
+                .build();
 
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(URL_STAGING)
-                    .client(okHttpClient)
-                    .addConverterFactory(GsonConverterFactory.create(GSON))
-                    .build();
+        retrofit = new Retrofit.Builder()
+                .baseUrl(AppStatics.getURL_STAGING())
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create(AppStatics.getGSON()))
+                .build();
 
         return retrofit;
-    }
-
-    private interface TokenService {
-
-        @Headers({
-                "X-AUTH-CLIENT:24d887f4-ad3e-43da-bc98-c8099ad6f430",
-                "CONTENT-TYPE:application/json"
-        })
-        @POST("/v1/sessions")
-        Call<TokenResponse> getToken(@Header("X-SIGNATURE") String signature, @Body TokenPayload payload);
     }
 
     private class QrCodeContentsParser {

@@ -18,10 +18,12 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/veriff_logo"
             android:scaleType="centerInside"
             android:src="@drawable/ic_veriff"
-            android:layout_marginEnd="56dp"
-            android:layout_gravity="center"/>
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="13dp" />
 
     </android.support.v7.widget.Toolbar>
 
@@ -47,98 +49,71 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/txtEmail"/>
+        app:layout_constraintBottom_toTopOf="@+id/txt_email"/>
 
-    <Button
+    <!--<Button-->
+        <!--android:id="@+id/launch_button"-->
+        <!--android:text="@string/launch_demo"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="56dp"-->
+        <!--android:textColor="@color/vrffWhite"-->
+        <!--android:background="@drawable/button"-->
+        <!--android:foreground="?attr/selectableItemBackgroundBorderless"-->
+        <!--android:layout_margin="24dp"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--tools:targetApi="m" />-->
+
+
+    <mobi.lab.veriff.layouts.VeriffButton
         android:id="@+id/launch_button"
-        android:text="@string/launch_demo"
+        style="@style/vrffButton.text"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:textColor="@color/vrffWhite"
-        android:background="@drawable/button"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:layout_height="@dimen/vrff_button_height"
+        android:foreground="?attr/selectableItemBackground"
+        android:layout_alignParentBottom="true"
+        app:vrff_button_ui="button_filled"
+        app:vrff_button_type="button_text"
+        app:vrff_button_text="@string/vrff.try.again"
         android:layout_margin="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:targetApi="m" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <EditText
-        android:id="@+id/txtPassword"
+        android:id="@+id/txt_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/edit_text_background"
+        android:ems="10"
+        android:hint="@string/str_hint_email"
+        android:inputType="textEmailAddress"
+        android:lineSpacingExtra="8sp"
+        app:layout_constraintBottom_toTopOf="@+id/txt_password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:nextFocusDown="@id/txt_password"/>
+
+    <EditText
+        android:id="@+id/txt_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
+        android:background="@drawable/edit_text_background"
         android:ems="10"
         android:hint="@string/str_hint_password"
         android:inputType="textPassword"
         android:lineSpacingExtra="8sp"
         app:layout_constraintBottom_toTopOf="@+id/launch_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"/>
 
-    <EditText
-        android:id="@+id/txtEmail"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="16dp"
-        android:ems="10"
-        android:hint="@string/str_hint_email"
-        android:inputType="textEmailAddress"
-        android:lineSpacingExtra="8sp"
-        app:layout_constraintBottom_toTopOf="@+id/txtPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>
-
-
-<!--<?xml version="1.0" encoding="utf-8"?>-->
-<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-    <!--xmlns:tools="http://schemas.android.com/tools"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:orientation="vertical"-->
-    <!--tools:context=".login.LoginActivity"-->
-    <!--android:padding="@dimen/vrff_spacing_8"-->
-    <!--android:gravity="center_vertical">-->
-
-
-    <!--<EditText-->
-        <!--android:id="@+id/txtUserEmail"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:hint="@string/str_hint_email"-->
-        <!--android:inputType="textEmailAddress"/>-->
-
-
-    <!--<EditText-->
-        <!--android:id="@+id/txtUserPassword"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="@dimen/vrff_spacing_8"-->
-        <!--android:hint="@string/str_hint_password"-->
-        <!--android:inputType="textPassword"/>-->
-
-    <!--<Button-->
-        <!--android:id="@+id/btnLogin"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="@dimen/vrff_spacing_8"-->
-        <!--android:text="@string/str_login"/>-->
-
-    <!--<TextView-->
-        <!--android:id="@+id/txtSkipLogin"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="@dimen/vrff_spacing_8"-->
-        <!--android:gravity="center"-->
-        <!--android:text="@string/str_skip_login"/>-->
-
-
-
-<!--</LinearLayout>-->

@@ -4,9 +4,12 @@ interface LoginMVP {
 
 
     interface View {
-        fun startMainFlow()
+        fun startVeriffFlow(sessionToken: String)
+        fun showToast(msg: String)
     }
 
 
-    interface Presenter
+    interface Presenter {
+        fun startVeriffFlow()
+    }
 }
