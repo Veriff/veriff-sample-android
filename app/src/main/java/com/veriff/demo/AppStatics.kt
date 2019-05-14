@@ -1,9 +1,5 @@
 package com.veriff.demo
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import java.util.*
-
 class AppStatics {
 
 
@@ -20,8 +16,8 @@ class AppStatics {
         @JvmStatic
         val REQUEST_SUCCESSFUL = 201
 
-        @JvmStatic
-        val GSON: Gson = GsonBuilder().registerTypeAdapter(Date::class.java, DateTypeAdapter()).create()
+
+        val PREF_ACCESS_TOKEN = "pref_access_token"
     }
 
 }

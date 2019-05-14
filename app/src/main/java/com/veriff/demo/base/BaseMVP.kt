@@ -4,8 +4,13 @@ interface BaseMVP {
 
     interface BaseView {
         fun showToast(msg: String)
+        fun showProgress()
+        fun stopProgress()
     }
 
-    interface BasePresenter
+    interface BasePresenter {
+        fun start()
+        fun cancel()
+    }
 
 }

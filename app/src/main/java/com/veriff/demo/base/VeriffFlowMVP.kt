@@ -1,22 +1,48 @@
 package com.veriff.demo.base
 
-import com.veriff.demo.dataSources.TokenDataSourceI
+import com.veriff.demo.AppStatics
+import com.veriff.demo.data.dataSources.sessionToken.SessionTokenDataSourceI
 
 interface VeriffFlowMVP : BaseMVP {
 
 
     interface View : BaseMVP.BaseView {
-        fun startVeriffFlow(sessionToken: String)
+        fun startVeriffFlow(sessionToken: String, url: String)
     }
 
-    abstract class Presenter(private val view: View) : BaseMVP.BasePresenter {
+    abstract class Presenter(private val view: View, private val model: VeriffFlowModel) : BaseMVP.BasePresenter {
+
+        private var sessionToken: String? = null
+        internal var baseUrl = AppStatics.URL_STAGING
+
         abstract fun startVeriffFlow()
 
-        fun makeTokenRequest(tokenDataSource: TokenDataSourceI) {
-            tokenDataSource.getToken(object : TokenDataSourceI.Callback {
-                override fun gotToken(token: String) {
-                    view.startVeriffFlow(token)
+        fun parseQrCodeContents(contents: String): Pair<String?, String?> {
+            val parsedContents = model.parseQrCodeContents(contents)
+            parsedContents.first?.let {
+                baseUrl = it
+            }
+            parsedContents.second?.let {
+                sessionToken = it
+            }
+
+            sessionToken?.let {
+                if (it.isNotEmpty()) {
+                    view.startVeriffFlow(it, baseUrl)
+                } else {
+                    view.showToast("No token available, try again")
                 }
+            }
+
+            return parsedContents
+        }
+
+        fun makeTokenRequest() {
+            model.getSessionToken(object : SessionTokenDataSourceI.Callback {
+                override fun gotToken(token: String) {
+                    view.startVeriffFlow(token, baseUrl)
+                }
+
                 override fun error(msg: String) {
                     view.showToast(msg)
                 }

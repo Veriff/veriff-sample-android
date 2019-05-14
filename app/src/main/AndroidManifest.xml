@@ -9,6 +9,7 @@
     <uses-permission android:name="${applicationId}.VERIFF_STATUS_BROADCAST_PERMISSION" />
 
     <application
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:fullBackupContent="@xml/full_backup_content"
         android:icon="@mipmap/ic_launcher"

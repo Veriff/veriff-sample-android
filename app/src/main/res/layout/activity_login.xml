@@ -52,16 +52,15 @@
         app:layout_constraintBottom_toTopOf="@+id/txt_email"/>
 
 
-    <mobi.lab.veriff.layouts.VeriffButton
+    <Button
         android:id="@+id/btnLogin"
         style="@style/vrffButton.text"
         android:layout_width="match_parent"
         android:layout_height="@dimen/vrff_button_height"
         android:foreground="?attr/selectableItemBackground"
         android:layout_alignParentBottom="true"
-        app:vrff_button_ui="button_filled"
-        app:vrff_button_type="button_text"
-        app:vrff_button_text="@string/vrff.try.again"
+        android:text="@string/str_login"
+        android:background="@drawable/button"
         android:layout_margin="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

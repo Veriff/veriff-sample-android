@@ -13,4 +13,6 @@
     <string name="veriff_logo">Veriff logo</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_out">Sign Out</string>
+    <string name="err_invalid_email">Please enter a valid email</string>
+    <string name="err_invalid_password">Please enter a valid password</string>
 </resources>

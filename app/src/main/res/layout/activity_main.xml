@@ -46,12 +46,12 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="32dp"
         android:text="@string/main_instruction"
-        app:layout_constraintBottom_toTopOf="@+id/launchButton"
+        app:layout_constraintBottom_toTopOf="@+id/btnLaunchVeriffFlow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/launchButton"
+        android:id="@+id/btnLaunchVeriffFlow"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginStart="24dp"
