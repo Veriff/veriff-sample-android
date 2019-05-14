@@ -3,7 +3,6 @@ package com.veriff.demo.utils
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import com.veriff.demo.AppStatics
-import com.veriff.demo.MainActivity
 import com.veriff.demo.loging.Log
 import mobi.lab.veriff.data.ColorSchema
 import mobi.lab.veriff.data.Veriff
@@ -50,7 +49,7 @@ class GeneralUtils {
                     .build()
 
             //enable logging for the library
-            Veriff.setLoggingImplementation(Log.getInstance(MainActivity::class.java))
+            Veriff.setLoggingImplementation(Log.getInstance(activity))
             val veriffSDK = Veriff.Builder(baseUrl, sessionToken)
             veriffSDK.setCustomColorSchema(schema)
 

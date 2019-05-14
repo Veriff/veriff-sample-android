@@ -6,10 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundMain"
-    tools:context="com.veriff.demo.MainActivity">
+    tools:context="com.veriff.demo.screens.welcome.WelcomeScreenActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/main_toolbar"
+        android:id="@+id/toolbarMain"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/vrffWhite"
@@ -26,38 +26,59 @@
     </android.support.v7.widget.Toolbar>
 
     <TextView
-        android:text="@string/main_welcome"
         style="@style/SampleText.title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        app:layout_constraintBottom_toTopOf="@id/main_description"/>
+        android:layout_marginBottom="16dp"
+        android:text="@string/main_welcome"
+        app:layout_constraintBottom_toTopOf="@id/mainDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/main_description"
+        android:id="@+id/mainDescription"
         style="@style/SampleText.16"
-        android:text="@string/main_instruction"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/launch_button"/>
+        android:text="@string/main_instruction"
+        app:layout_constraintBottom_toTopOf="@+id/launchButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/launch_button"
-        android:text="@string/launch_demo"
+        android:id="@+id/launchButton"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:textColor="@color/vrffWhite"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/button"
         android:foreground="?attr/selectableItemBackgroundBorderless"
-        android:layout_margin="24dp"
+        android:text="@string/launch_demo"
+        android:textColor="@color/vrffWhite"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/txtSignIn"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:targetApi="m" />
+
+    <TextView
+        android:id="@+id/txtSignIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:textColor="@color/vrffBlue"
+        android:textSize="14sp"
+        android:text="@string/sign_in"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
