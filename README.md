@@ -8,10 +8,10 @@
 
 ## Step-By-Step integration guide
 
-### 1. Add sdk to a project
+### 1. Add Veriff SDK to your project
 
-<details><summary> 1.1 Veriff version 2.+</summary>
-  1.1.1 Add two new maven repository destination under the root build.gradle repositories tag in allprojects bracket. It should contain the following two maven repositories:
+#### Veriff SDK 2.*
+Add two new maven repository destination in the project-level build.gradle repositories tag in allprojects bracket. It should contain the following two maven repositories:
 
   ``` java
     allprojects {
@@ -25,22 +25,18 @@
     }
   ```
 
-
-    1.1.2 Add two dependency imports in the application build.gradle dependency list:
+Add two dependency imports in the application build.gradle dependency list:
 
   ``` java
-    implementation 'com.veriff:veriff-library:2.2.1'
+    implementation 'com.veriff:veriff-library:2.3.0'
     implementation 'io.probity.sdk:collector:1.0.0'
   ```
-</details>
 
-<details><summary>1.2 Veriff SDK versions 1.* are no longer supported</summary>
-  Veriff SDK versions 1.* are no longer being supported, please integrate version 2.+ instead.
+#### Veriff SDK 1.*
+  Veriff SDK versions 1.* are no longer being supported, please integrate version 2.* instead.
 
-  To integrate Veriff into a new project, then see the previous section 1.1 on how to integrate
-  To upgrade from 1.* to 2.+ refer to section [on upgrading Veriff](#upgrading-veriff)
-
-</details>
+  To integrate Veriff into a new project, follow the previous section
+  To upgrade from 1.* to 2.* refer to section [on upgrading Veriff](#upgrading-veriff)
 
 ## Using the Veriff SDK
 
@@ -215,11 +211,9 @@ android:permission="${applicationId}.VERIFF_STATUS_BROADCAST_PERMISSION">
 
 # Upgrading Veriff
 
-## Upgrading Veriff SDK from 1.* to 2.+
+### 3. Upgrading Veriff SDK from 1.* to 2.*
 
-### 3. Veriff SDK upgrade to 2.+
-
-Veriff SDK 2.+ integration has changed significantly since 1.*. There are mayor changes in the SDK distribution where the SDK from now on is distributed via gradle import and many previously required services have been removed and trimmed down.
+Veriff SDK 2.* integration has changed significantly since 1.*. There are major changes in the SDK distribution where the SDK from now on is distributed via gradle import and many previously required services have been removed and trimmed down.
 
 ## 3.1 Remove Veriff SDK required Firebase code
 
