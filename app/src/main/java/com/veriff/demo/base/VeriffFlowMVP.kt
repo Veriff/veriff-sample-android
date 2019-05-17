@@ -1,7 +1,7 @@
 package com.veriff.demo.base
 
 import com.veriff.demo.AppStatics
-import com.veriff.demo.data.dataSources.sessionToken.SessionTokenDataSourceI
+import com.veriff.demo.data.dataSources.sessionToken.SessionTokenDataSourceI.Callback
 
 interface VeriffFlowMVP : BaseMVP {
 
@@ -37,8 +37,20 @@ interface VeriffFlowMVP : BaseMVP {
             return parsedContents
         }
 
+        fun makeTokenRequestForUser(accessToken: String) {
+            model.getSessionTokenForUser(accessToken, object : Callback {
+                override fun gotToken(token: String) {
+                    view.startVeriffFlow(token, baseUrl)
+                }
+
+                override fun error(msg: String) {
+                    view.showToast(msg)
+                }
+            })
+        }
+
         fun makeTokenRequest() {
-            model.getSessionToken(object : SessionTokenDataSourceI.Callback {
+            model.getSessionToken(object : Callback {
                 override fun gotToken(token: String) {
                     view.startVeriffFlow(token, baseUrl)
                 }

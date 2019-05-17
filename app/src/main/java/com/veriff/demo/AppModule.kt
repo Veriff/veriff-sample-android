@@ -2,6 +2,7 @@ package com.veriff.demo
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.veriff.demo.data.dataSources.login.DummyUserDataSource
 import com.veriff.demo.data.dataSources.login.UserDataSource
 import com.veriff.demo.data.dataSources.login.UserDataSourceI
 import com.veriff.demo.data.dataSources.sessionToken.SessionTokenDataSourceI
@@ -23,6 +24,7 @@ import com.veriff.demo.utils.stringFetcher.AndroidStringFetcher
 import com.veriff.demo.utils.stringFetcher.StringFetcherI
 import mobi.lab.veriff.util.LogAccess
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import java.util.*
 
@@ -45,7 +47,10 @@ class AppModule {
             single<LocalStorageI> {
                 SharedPrefLocalStorage(androidContext(), "PREF_" + BuildConfig.APPLICATION_ID)
             }
-            single<UserDataSourceI> {
+
+
+            single<UserDataSourceI>(named("dummy")) { DummyUserDataSource() }
+            single<UserDataSourceI>(named("network")) {
                 UserDataSource(appNetworkService = get(), localStorage = get())
             }
         }
@@ -71,7 +76,7 @@ class AppModule {
                 LoginModel(
                         qrCodeContentsParser = get(),
                         sessionTokenDataSource = get(),
-                        userDataSource = get()
+                        userDataSource = get(named("network"))
                 )
             }
             factory<LoginMVP.Presenter> { (view: LoginMVP.View) ->

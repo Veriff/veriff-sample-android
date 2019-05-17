@@ -2,7 +2,9 @@ package com.veriff.demo.screens.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
+import com.veriff.demo.BuildConfig
 import com.veriff.demo.R
 import com.veriff.demo.base.BaseActivity
 import com.veriff.demo.utils.GeneralUtils
@@ -21,11 +23,12 @@ class LoginScreenActivity : BaseActivity(), LoginMVP.View {
         setupToolbar()
 
         btnLogin.setOnClickListener {
-            txt_email.error = null
-            txt_password.error = null
-            presenter.login(txt_email.text.toString(), txt_password.text.toString())
+            txtEmail.error = null
+            txtPassword.error = null
+            presenter.login(txtEmail.text.toString(), txtPassword.text.toString())
         }
 
+        
     }
 
     private fun setupToolbar() {
@@ -37,16 +40,27 @@ class LoginScreenActivity : BaseActivity(), LoginMVP.View {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        presenter.start()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.cancel()
+    }
+
     override fun startVeriffFlow(sessionToken: String, url: String) {
         GeneralUtils.launchVeriffSDK(sessionToken, this@LoginScreenActivity, url)
+        finish()
     }
 
     override fun showEmailError(msg: String) {
-        txt_email.error = msg
+        txtEmail.error = msg
     }
 
     override fun showPasswordError(msg: String) {
-        txt_password.error = msg
+        txtPassword.error = msg
     }
 
     override fun showLoginError(msg: String) {
@@ -58,10 +72,21 @@ class LoginScreenActivity : BaseActivity(), LoginMVP.View {
     }
 
     override fun showProgress() {
+        txtEmail.isEnabled = false
+        txtPassword.isEnabled = false
 
+        btnLogin.isEnabled = false
+        progressButton.visibility = View.VISIBLE
+        txtButton.visibility = View.GONE
     }
 
     override fun stopProgress() {
+        txtEmail.isEnabled = true
+        txtPassword.isEnabled = true
+
+        btnLogin.isEnabled = true
+        progressButton.visibility = View.GONE
+        txtButton.visibility = View.VISIBLE
     }
 
 

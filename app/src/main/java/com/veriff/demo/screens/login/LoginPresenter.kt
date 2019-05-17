@@ -1,6 +1,7 @@
 package com.veriff.demo.screens.login
 
 import com.veriff.demo.R
+import com.veriff.demo.data.LoginResponse
 import com.veriff.demo.data.dataSources.ModelCallback
 import com.veriff.demo.utils.stringFetcher.StringFetcherI
 
@@ -10,11 +11,11 @@ class LoginPresenter(private val view: LoginMVP.View, model: LoginModel,
 
 
     override fun start() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun cancel() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun startVeriffFlow() {
@@ -38,11 +39,15 @@ class LoginPresenter(private val view: LoginMVP.View, model: LoginModel,
         if (allFieldsValid) {
             loginModel.login(email, password, callback = object : ModelCallback {
                 override fun gotData(data: Any?) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    if (data is LoginResponse) {
+                        makeTokenRequestForUser(data.accessToken)
+                        view.stopProgress()
+                    }
                 }
 
                 override fun error(msg: String) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    view.showToast(msg)
+                    view.stopProgress()
                 }
             })
         } else {

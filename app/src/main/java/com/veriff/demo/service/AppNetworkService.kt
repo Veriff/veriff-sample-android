@@ -1,22 +1,25 @@
 package com.veriff.demo.service
 
+import com.veriff.demo.AppStatics.Companion.API_CLIENT_ID
+import com.veriff.demo.data.LoginResponse
 import com.veriff.demo.data.TokenPayload
 import com.veriff.demo.data.TokenResponse
-import com.veriff.demo.data.LoginResponse
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.Header
-import retrofit2.http.Headers
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface AppNetworkService {
 
-    @Headers("X-AUTH-CLIENT:24d887f4-ad3e-43da-bc98-c8099ad6f430", "CONTENT-TYPE:application/json")
+    @Headers("X-AUTH-CLIENT:$API_CLIENT_ID", "CONTENT-TYPE:application/json")
     @POST("/v1/sessions")
     fun getToken(@Header("X-SIGNATURE") signature: String, @Body payload: TokenPayload): Call<TokenResponse>
 
+    @POST("/v1/sessions")
+    fun getTokenForUser(@Header("X-SIGNATURE") signature: String, @Body payload: TokenPayload,
+                        @HeaderMap extraHeaders: Map<String, String>): Call<TokenResponse>
 
-    @Headers("CONTENT-TYPE:application/json", "Grant-type:password")
+    @Headers("CONTENT-TYPE:application/x-www-form-urlencoded")
+    @FormUrlEncoded
     @POST("/v1/token")
-    fun login(@Body email: String, @Body password: String): Call<LoginResponse>
+    fun login(@Field("username") username: String, @Field("password") password: String,
+              @Field("grant_type") grantType: String = "password"): Call<LoginResponse>
 }

@@ -80,6 +80,12 @@ class GeneralUtils {
 
             return retrofit
         }
+
+
+        @JvmStatic
+        fun getCurrMillis(): Long{
+            return System.currentTimeMillis()
+        }
     }
 
 

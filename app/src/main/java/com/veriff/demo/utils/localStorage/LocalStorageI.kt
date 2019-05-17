@@ -18,4 +18,6 @@ interface LocalStorageI {
     fun saveObject(key: String, obj: Any)
     fun getObject(key: String): Any?
 
+    fun clearAll()
+
 }

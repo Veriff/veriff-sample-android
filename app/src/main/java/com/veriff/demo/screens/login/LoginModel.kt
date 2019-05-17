@@ -6,6 +6,7 @@ import com.veriff.demo.data.dataSources.DataSourceCallback
 import com.veriff.demo.data.dataSources.ModelCallback
 import com.veriff.demo.data.dataSources.login.UserDataSourceI
 import com.veriff.demo.data.dataSources.sessionToken.SessionTokenDataSourceI
+import com.veriff.demo.utils.GeneralUtils
 import com.veriff.demo.utils.qrCodeParser.QrCodeContentsParserI
 
 class LoginModel(qrCodeContentsParser: QrCodeContentsParserI,
@@ -15,10 +16,10 @@ class LoginModel(qrCodeContentsParser: QrCodeContentsParserI,
 
 
     fun login(email: String, password: String, callback: ModelCallback) {
-        userDataSource.login(email, password, callback = object : DataSourceCallback{
+        userDataSource.login(email, password, callback = object : DataSourceCallback {
             override fun gotData(data: Any?) {
                 (data as LoginResponse).let {
-
+                    callback.gotData(data)
                 }
             }
 
@@ -29,8 +30,21 @@ class LoginModel(qrCodeContentsParser: QrCodeContentsParserI,
     }
 
 
-    fun isLoggedIn(): Boolean{
-        return userDataSource.getCurrentAccessToken().isNotEmpty()
+    fun isLoggedIn(): Boolean {
+        val currMillis = GeneralUtils.getCurrMillis()
+        val lastLoggedInMillis = userDataSource.getLastLoggedInMillis()
+        val expiresIn = userDataSource.getExpiresIn()
+        val accessToken = userDataSource.getAccessToken()
+        if ((currMillis - lastLoggedInMillis) < expiresIn && accessToken.isNotEmpty()) {
+            return true
+        }
+
+        return false
+
+    }
+
+    fun logout() {
+        userDataSource.logout()
     }
 
 }

@@ -28,7 +28,7 @@ class WelcomeScreenActivity : com.veriff.demo.base.BaseActivity(), WelcomeMVP.Vi
         }
 
         txtSignIn.setOnClickListener {
-            LoginScreenActivity.start(this)
+            presenter.onSignInClicked()
         }
     }
 
@@ -39,6 +39,16 @@ class WelcomeScreenActivity : com.veriff.demo.base.BaseActivity(), WelcomeMVP.Vi
         toolbarMain.setNavigationOnClickListener {
             startActivityForResult(SettingsActivity.createIntent(this), AppStatics.TOKEN_RESULT)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        presenter.start()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.cancel()
     }
 
     override fun startVeriffFlow(sessionToken: String, url: String) {
@@ -55,6 +65,11 @@ class WelcomeScreenActivity : com.veriff.demo.base.BaseActivity(), WelcomeMVP.Vi
 
     override fun setLoggedOutView() {
         txtSignIn.text = resources.getString(R.string.sign_in)
+    }
+
+
+    override fun navigateToLogin() {
+        LoginScreenActivity.start(this)
     }
 
     override fun showProgress() {

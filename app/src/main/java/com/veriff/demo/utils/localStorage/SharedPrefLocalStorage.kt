@@ -8,6 +8,13 @@ class SharedPrefLocalStorage(context: Context, name: String) : LocalStorageI {
     private var sharedPrefs: SharedPreferences = context.getSharedPreferences(name,
             Context.MODE_PRIVATE)
 
+    override fun clearAll() {
+        sharedPrefs
+                .edit()
+                .clear()
+                .apply()
+    }
+
     override fun saveInt(key: String, value: Int) {
         sharedPrefs
                 .edit()

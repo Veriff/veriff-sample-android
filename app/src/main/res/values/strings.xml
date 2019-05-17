@@ -15,4 +15,5 @@
     <string name="sign_out">Sign Out</string>
     <string name="err_invalid_email">Please enter a valid email</string>
     <string name="err_invalid_password">Please enter a valid password</string>
+    <string name="str_signed_out">Signed out</string>
 </resources>

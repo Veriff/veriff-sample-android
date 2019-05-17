@@ -4,6 +4,7 @@ interface SessionTokenDataSourceI {
 
     fun getToken(callback: Callback)
 
+    fun getTokenForUser(accessToken: String, callback: Callback)
 
     interface Callback {
         fun gotToken(token: String)

@@ -7,7 +7,11 @@ interface WelcomeMVP : VeriffFlowMVP {
     interface View : VeriffFlowMVP.View {
         fun setLoggedInView()
         fun setLoggedOutView()
+        fun navigateToLogin()
     }
 
-    abstract class Presenter(view: View, model: WelcomeModel) : VeriffFlowMVP.Presenter(view, model as VeriffFlowModel)
+    abstract class Presenter(view: View, model: WelcomeModel)
+        : VeriffFlowMVP.Presenter(view, model as VeriffFlowModel) {
+        abstract fun onSignInClicked()
+    }
 }
