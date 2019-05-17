@@ -1,9 +1,3 @@
----
-owner: "End User"
-description: "This repo holds the code for our Android SDK Sample Application."
-status: "production"
-type: "application"
----
 
 <img src="https://github.com/Veriff/android-sample-app/blob/master/veriff-logo.png" width="300">
 
