@@ -10,13 +10,9 @@ class LoginPresenter(private val view: LoginMVP.View, model: LoginModel,
                      private val loginModel: LoginModel) : LoginMVP.Presenter(view, model) {
 
 
-    override fun start() {
+    override fun start() {}
 
-    }
-
-    override fun cancel() {
-
-    }
+    override fun cancel() {}
 
     override fun startVeriffFlow() {
         makeTokenRequest()

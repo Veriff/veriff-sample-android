@@ -4,6 +4,8 @@ import android.os.Handler
 import com.veriff.demo.data.LoginResponse
 import com.veriff.demo.data.dataSources.DataSourceCallback
 
+
+//used for testing while developing
 class DummyUserDataSource : UserDataSourceI {
 
     override fun login(email: String, password: String, callback: DataSourceCallback) {

@@ -11,10 +11,8 @@ class QrCodeContentsParser : QrCodeContentsParserI {
     override fun parseQrCodeContents(contents: String): Pair<String?, String?> {
         val url: URL? = createUrl(contents)
         if (url != null) {
-            // Demo interface QR codes contain host and session token
             setHostAndTokenFromUrl(url)
         } else {
-            // Back office QR codes only contain session token
             sessionToken = contents
         }
 
@@ -33,7 +31,6 @@ class QrCodeContentsParser : QrCodeContentsParserI {
     private fun setHostAndTokenFromUrl(url: URL?) {
         url.let {
             baseUrl = url!!.protocol + "://" + url.host + "/"
-//            sessionToken = url!!.path.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[2]
             sessionToken = url.path.split("/".toRegex())[2]
         }
     }

@@ -83,7 +83,7 @@ class GeneralUtils {
 
 
         @JvmStatic
-        fun getCurrMillis(): Long{
+        fun getCurrMillis(): Long {
             return System.currentTimeMillis()
         }
     }

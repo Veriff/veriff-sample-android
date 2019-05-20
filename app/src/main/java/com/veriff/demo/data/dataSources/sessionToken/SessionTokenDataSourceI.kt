@@ -3,7 +3,6 @@ package com.veriff.demo.data.dataSources.sessionToken
 interface SessionTokenDataSourceI {
 
     fun getToken(callback: Callback)
-
     fun getTokenForUser(accessToken: String, callback: Callback)
 
     interface Callback {
