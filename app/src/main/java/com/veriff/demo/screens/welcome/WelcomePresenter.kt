@@ -18,22 +18,28 @@ class WelcomePresenter(private val view: WelcomeMVP.View, model: WelcomeModel,
         }
     }
 
-    override fun cancel() {
-
-    }
-
     override fun onSignInClicked() {
         if (loginModel.isLoggedIn()) {
-            loginModel.logout()
-            view.setLoggedOutView()
-            view.showToast(stringFetcher.getString(R.string.str_signed_out))
+            view.showLogoutConfirmation()
+
         } else {
             view.navigateToLogin()
         }
     }
 
+    override fun onLogoutConfirmed() {
+        loginModel.logout()
+        view.setLoggedOutView()
+        view.showToast(stringFetcher.run { getString(R.string.str_signed_out) })
+    }
+
+    override fun onLogoutCancelled() {}
+
     override fun startVeriffFlow() {
         makeTokenRequest()
     }
+
+
+    override fun cancel() {}
 
 }

@@ -8,10 +8,13 @@ interface WelcomeMVP : VeriffFlowMVP {
         fun setLoggedInView()
         fun setLoggedOutView()
         fun navigateToLogin()
+        fun showLogoutConfirmation()
     }
 
     abstract class Presenter(view: View, model: WelcomeModel)
         : VeriffFlowMVP.Presenter(view, model as VeriffFlowModel) {
         abstract fun onSignInClicked()
+        abstract fun onLogoutConfirmed()
+        abstract fun onLogoutCancelled()
     }
 }

@@ -36,7 +36,7 @@ class VeriffSessionTokenDataSource(private val appNetworkService: AppNetworkServ
     }
 
     override fun getTokenForUser(accessToken: String, callback: SessionTokenDataSourceI.Callback) {
-        val pay = "{\"verification\":{\"document\":{\"number\":\"B01234567\",\"type\":\"ID_CARD\",\"country\":\"EE\"},\"additionalData\":{\"placeOfResidence\":\"Tartu\",\"citizenship\":\"EE\"},\"timestamp\":\"2018-12-12T11:02:05.261Z\",\"lang\":\"et\",\"features\":[\"selfid\"],\"person\":{\"firstName\":\"Tundmatu\",\"idNumber\":\"38508260269\",\"lastName\":\"Toomas\"}}}"
+        val pay = "{\"verification\":{\"document\":{\"number\":\"B01234567\",\"type\":\"ID_CARD\",\"country\":\"EE\"},\"additionalData\":{\"placeOfResidence\":\"Tartu\",\"citizenship\":\"EE\"},\"timestamp\":\"2018-12-12T11:02:05.261Z\",\"lang\":\"en\",\"features\":[\"selfid\"],\"person\":{\"firstName\":\"Tundmatu\",\"idNumber\":\"38508260269\",\"lastName\":\"Toomas\"}}}"
         val load = gson.fromJson(pay, TokenPayload::class.java)
         val toBeHashed = gson.toJson(load) + BuildConfig.API_SECRET
         val signature = GeneralUtils.sha256(toBeHashed)

@@ -3,6 +3,8 @@ package com.veriff.demo.screens.welcome
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
+import android.view.ContextThemeWrapper
 import android.widget.Toast
 import com.veriff.demo.AppStatics
 import com.veriff.demo.R
@@ -70,6 +72,16 @@ class WelcomeScreenActivity : com.veriff.demo.base.BaseActivity(), WelcomeMVP.Vi
 
     override fun navigateToLogin() {
         LoginScreenActivity.start(this)
+    }
+
+    override fun showLogoutConfirmation() {
+        val builder = AlertDialog.Builder(ContextThemeWrapper(this, mobi.lab.veriff.R.style.vrffAlertDialogStyle))
+        builder.setMessage(getString(R.string.demo_alert_logout))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.demo_yes)) { _, _ -> presenter.onLogoutConfirmed() }
+                .setNegativeButton(getString(R.string.demo_no)) { _, _ -> presenter.onLogoutCancelled() }
+        val dialog = builder.create()
+        dialog.show()
     }
 
     override fun showProgress() {

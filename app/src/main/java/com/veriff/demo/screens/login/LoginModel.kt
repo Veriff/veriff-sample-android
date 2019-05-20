@@ -38,9 +38,7 @@ class LoginModel(qrCodeContentsParser: QrCodeContentsParserI,
         if ((currMillis - lastLoggedInMillis) < expiresIn && accessToken.isNotEmpty()) {
             return true
         }
-
         return false
-
     }
 
     fun logout() {

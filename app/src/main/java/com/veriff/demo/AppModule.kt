@@ -66,7 +66,8 @@ class AppModule {
                 WelcomePresenter(
                         model = get(),
                         view = view,
-                        loginModel = get()
+                        loginModel = get(),
+                        stringFetcher = get()
                 )
             }
         }

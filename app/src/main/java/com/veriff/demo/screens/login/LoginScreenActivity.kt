@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import com.veriff.demo.BuildConfig
 import com.veriff.demo.R
 import com.veriff.demo.base.BaseActivity
 import com.veriff.demo.utils.GeneralUtils
@@ -27,8 +26,6 @@ class LoginScreenActivity : BaseActivity(), LoginMVP.View {
             txtPassword.error = null
             presenter.login(txtEmail.text.toString(), txtPassword.text.toString())
         }
-
-        
     }
 
     private fun setupToolbar() {

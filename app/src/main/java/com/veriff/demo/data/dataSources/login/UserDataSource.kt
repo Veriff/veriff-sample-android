@@ -32,9 +32,7 @@ class UserDataSource(private val appNetworkService: AppNetworkService,
                         callback.gotData(it)
                     }
                 } else {
-                    response.errorBody()?.let {
-                        it.getErrorDescription(callback)
-                    }
+                    response.errorBody()?.getErrorDescription(callback)
                 }
             }
 
