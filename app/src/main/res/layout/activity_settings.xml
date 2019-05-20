@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,27 +11,27 @@
         android:id="@+id/settings_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:gravity="center"
         android:background="@color/vrffWhite"
+        android:gravity="center"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:text="@string/settings_title"
             style="@style/SampleText.16"
-            android:textStyle="bold"
-            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp" />
+            android:layout_marginEnd="20dp"
+            android:gravity="center"
+            android:text="@string/settings_title"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/settings_close"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/vrff_ic_close"
+            android:layout_gravity="end"
             android:foreground="?attr/selectableItemBackground"
-            android:layout_gravity="end"/>
+            android:scaleType="centerInside"
+            android:src="@drawable/vrff_ic_close" />
 
     </android.support.v7.widget.Toolbar>
 
@@ -40,46 +39,46 @@
         android:id="@+id/settings_search"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:orientation="horizontal"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:background="@drawable/token_edit"
-        app:layout_constraintTop_toBottomOf="@+id/settings_toolbar"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/settings_toolbar">
 
         <EditText
             android:id="@+id/settings_token_edit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_gravity="center"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="16dp"
-            android:inputType="text"
-            android:maxLines="1"
-            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
             android:hint="@string/settings_hint"
-            android:background="@android:color/transparent" />
+            android:inputType="text"
+            android:maxLines="1" />
 
 
         <ImageView
             android:id="@+id/settings_scan"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:src="@drawable/ic_qr"
             android:foreground="?attr/selectableItemBackground"
-            android:padding="12dp"/>
+            android:padding="12dp"
+            android:src="@drawable/ic_qr" />
 
         <ImageView
             android:id="@+id/settings_go"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:background="@drawable/button"
-            android:src="@drawable/ic_forward"
             android:foreground="?attr/selectableItemBackground"
             android:padding="12dp"
-            android:visibility="gone"/>
+            android:src="@drawable/ic_forward"
+            android:visibility="gone" />
 
     </LinearLayout>
 
@@ -88,8 +87,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="24dp"
-        app:layout_constraintTop_toBottomOf="@id/settings_search"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toBottomOf="@id/settings_search" />
 
 </android.support.constraint.ConstraintLayout>

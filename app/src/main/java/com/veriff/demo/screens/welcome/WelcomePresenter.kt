@@ -30,7 +30,7 @@ class WelcomePresenter(private val view: WelcomeMVP.View, model: WelcomeModel,
     override fun onLogoutConfirmed() {
         loginModel.logout()
         view.setLoggedOutView()
-        view.showToast(stringFetcher.run { getString(R.string.str_signed_out) })
+        view.showToast(stringFetcher.run { getString(R.string.signed_out) })
     }
 
     override fun onLogoutCancelled() {}

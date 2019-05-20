@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,7 +8,7 @@
     tools:context="com.veriff.demo.screens.login.LoginScreenActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbarLogin"
+        android:id="@+id/toolbar_login"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/vrffWhite"
@@ -18,10 +17,10 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_veriff"
+            android:layout_gravity="center"
             android:layout_marginEnd="56dp"
-            android:layout_gravity="center"/>
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_veriff" />
 
     </android.support.v7.widget.Toolbar>
 
@@ -33,60 +32,60 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="16dp"
         android:text="@string/main_welcome"
-        app:layout_constraintBottom_toTopOf="@+id/mainDescription"
+        app:layout_constraintBottom_toTopOf="@+id/txt_main_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/mainDescription"
+        android:id="@+id/txt_main_description"
         style="@style/SampleText.16"
-        android:text="@string/main_instruction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/txtEmail"/>
+        android:text="@string/main_instruction"
+        app:layout_constraintBottom_toTopOf="@+id/txt_email" />
 
 
     <FrameLayout
-        android:id="@+id/btnLogin"
+        android:id="@+id/btn_login"
         style="@style/vrffButton.text"
         android:layout_width="match_parent"
         android:layout_height="@dimen/vrff_button_height"
-        android:foreground="?attr/selectableItemBackground"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/button"
         android:layout_margin="24dp"
+        android:background="@drawable/button"
+        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/txtButton"
+            android:id="@+id/txt_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/str_login"
             android:layout_gravity="center_vertical"
             android:gravity="center"
+            android:text="@string/login"
             android:textColor="@color/vrffWhite"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
 
 
         <ProgressBar
-            android:id="@+id/progressButton"
+            android:id="@+id/progress_button"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
-            tools:visibility="visible"
-            android:visibility="gone"
             android:indeterminateDrawable="@drawable/vrff_button_loading_full"
-            android:indeterminateDuration="2500" />
+            android:indeterminateDuration="2500"
+            android:visibility="gone"
+            tools:visibility="visible" />
     </FrameLayout>
 
     <EditText
-        android:id="@+id/txtEmail"
+        android:id="@+id/txt_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -94,16 +93,16 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/edit_text_background"
         android:ems="10"
-        android:hint="@string/str_hint_email"
+        android:hint="@string/email_hint"
         android:inputType="textEmailAddress"
         android:lineSpacingExtra="8sp"
-        app:layout_constraintBottom_toTopOf="@+id/txtPassword"
+        android:nextFocusDown="@id/txt_password"
+        app:layout_constraintBottom_toTopOf="@+id/txt_password"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:nextFocusDown="@id/txtPassword"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/txtPassword"
+        android:id="@+id/txt_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -111,13 +110,11 @@
         android:layout_marginBottom="24dp"
         android:background="@drawable/edit_text_background"
         android:ems="10"
-        android:hint="@string/str_hint_password"
+        android:hint="@string/password_hint"
         android:inputType="textPassword"
         android:lineSpacingExtra="8sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnLogin"
+        app:layout_constraintBottom_toTopOf="@+id/btn_login"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

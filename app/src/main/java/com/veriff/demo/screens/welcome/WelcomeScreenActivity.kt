@@ -4,14 +4,16 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
+import android.support.v7.widget.Toolbar
 import android.view.ContextThemeWrapper
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import com.veriff.demo.AppStatics
 import com.veriff.demo.R
 import com.veriff.demo.SettingsActivity
 import com.veriff.demo.screens.login.LoginScreenActivity
 import com.veriff.demo.utils.GeneralUtils
-import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 
@@ -19,15 +21,25 @@ class WelcomeScreenActivity : com.veriff.demo.base.BaseActivity(), WelcomeMVP.Vi
 
     private lateinit var presenter: WelcomeMVP.Presenter
 
+    private lateinit var btnLaunchVeriffFlow: Button
+    private lateinit var txtSignIn: TextView
+    private lateinit var toolbarMain: Toolbar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        presenter = get { parametersOf(this) }
-        setupToolbar()
+
+        btnLaunchVeriffFlow = findViewById(R.id.btn_launch_veriff_flow)
+        txtSignIn = findViewById(R.id.txt_sign_in)
+        toolbarMain = findViewById(R.id.toolbar_main)
+
 
         btnLaunchVeriffFlow.setOnClickListener {
             presenter.startVeriffFlow()
         }
+
+        presenter = get { parametersOf(this) }
+        setupToolbar()
 
         txtSignIn.setOnClickListener {
             presenter.onSignInClicked()

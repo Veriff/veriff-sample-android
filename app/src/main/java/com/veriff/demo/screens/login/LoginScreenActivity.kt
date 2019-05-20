@@ -2,12 +2,12 @@ package com.veriff.demo.screens.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.Toolbar
 import android.view.View
-import android.widget.Toast
+import android.widget.*
 import com.veriff.demo.R
 import com.veriff.demo.base.BaseActivity
 import com.veriff.demo.utils.GeneralUtils
-import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 
@@ -15,9 +15,25 @@ class LoginScreenActivity : BaseActivity(), LoginMVP.View {
 
     private lateinit var presenter: LoginMVP.Presenter
 
+    private lateinit var btnLogin: FrameLayout
+    private lateinit var txtEmail: EditText
+    private lateinit var txtPassword: EditText
+    private lateinit var toolbarLogin: Toolbar
+    private lateinit var progressButton: ProgressBar
+    private lateinit var txtButton: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        btnLogin = findViewById(R.id.btn_login)
+        txtEmail = findViewById(R.id.txt_email)
+        txtPassword = findViewById(R.id.txt_password)
+        toolbarLogin = findViewById(R.id.toolbar_login)
+        progressButton = findViewById(R.id.progress_button)
+        txtButton = findViewById(R.id.txt_button)
+
+
         presenter = get { parametersOf(this) }
         setupToolbar()
 
