@@ -7,14 +7,14 @@
 * [Overview](#overview)
 * [Adding the SDK](#adding-the-sdk)
 * [Starting the verification flow](#starting-the-verification-flow)
-* [Get the verification status](#get-the-verification-status)
+* [Getting the verification status](#getting-the-verification-status)
     * [In the activity](#in-the-activity)
-    * [Using a background service](#using-background-service)
-    * [Using a broadcast receiver](#using-broadcast-receiver)
-* [Handling result](#handling-the-result)
-* [Adding logging](#adding-logging)
+    * [Using a background service](#using-a-background-service)
+    * [Using a broadcast receiver](#using-a-broadcast-receiver)
+* [Handling the result](#handling-the-result)
+* [Adding error logging](#adding-error-logging)
 * [Proguard rules](#proguard-rules)
-* [Go live](#go-live)
+* [Going live](#going-live)
 * [Releases](#releases)
 * [Upgrading from SDK 1.* to 2.+](#upgrading-sdk)
 
@@ -74,7 +74,7 @@ The verification result is sent to the vendor server in the background. (Referen
 application via onActivityResult, background service and broadcasts. The most reliable callback
 method is the background service because it’s usually waken up by the Android system services. All
 the mentioned ways return the same status codes so the vendor application developer can choose their
-preferred method and ignore the other ones. Refer to the [handling result](#handling-result) section
+preferred method and ignore the other ones. Refer to the [handling result](#handling-the-result) section
 to see how to handle the response and what each staus code means. Different ways to capture the
 result are as below.
 
@@ -306,7 +306,7 @@ the SDK before launching the SDK as shown below:
 -dontwarn com.koushikdutta.ion.conscrypt.ConscryptMiddleware
 ```
 
-## Go Live
+## Going live
 
 Set **baseUrl** for initialising the SDK as 'https://magic.veriff.me/v1/'
 
