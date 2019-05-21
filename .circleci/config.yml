@@ -4,8 +4,36 @@
 #
 #
 version: 2
+workflows:
+  version: 2
+  build_and_deploy:
+    - build_app:
+        filters:
+          tags:
+            only: /.*/
+          branches:
+            only: /.*/
+    - deploy_app_gate:
+        type: approval
+        requires:
+          - build_app
+        filters:
+          tags:
+            only: /.*/
+          branches:
+            only: /master/
+    - deploy_app:
+        context: mobile-sdk-playstore-publish
+        requires:
+          - deploy_app_gate
+        filters:
+          tags:
+            only: /.*/
+          branches:
+            only: /master/
+
 jobs:
-  build:
+  build_app:
     docker:
       # specify the version you desire here
       - image: circleci/android:api-28-alpha
@@ -44,5 +72,33 @@ jobs:
               mkdir /tmp/artifacts
               cp app/build/outputs/apk/debug/app-debug.apk /tmp/artifacts
               cp app/build/outputs/apk/release/app-release.apk /tmp/artifacts
+      - persist_to_workspace:
+          root: /tmp/artifacts
+          paths:
+            - app-debug.apk
+            - app-release.apk
       - store_artifacts:
           path: /tmp/artifacts
+  deploy_app:
+    docker:
+      - image: circleci/python:3.7.3
+    working_directory: ~/repo
+
+    shell: /bin/bash --login -o pipefail
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /tmp/artifacts
+      - run:
+          name: "Install google-api-python-client"
+          command: |
+            pip install google-api-python-client oauth2client --upgrade --user
+      - run:
+          name: "Checkout infra-tools"
+          command: |
+            git clone git@github.com:Veriff/infra-tools.git
+      - run:
+          name: "Publish to Google Play internal track"
+          command: |
+            echo "${PLAY_P12_KEY}" | base64 --decode > key.p12
+            ./infra-tools/scripts/publish_to_google_play.py "${PLAY_SERVICE_EMAIL}" key.p12 "${PLAY_P12_KEY_PASSPHRASE}" /tmp/artifacts/app-release.apk com.veriff.demo internal
