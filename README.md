@@ -1,7 +1,7 @@
 
 <img src="https://github.com/Veriff/android-sample-app/blob/master/veriff-logo.png" width="300">
 
-# Veriff Android SDK and sample app.
+# Mobile SDK Documentation for Android
 
 ### Table of contents
 * [Overview](#overview)
@@ -11,7 +11,7 @@
     * [In the activity](#in-the-activity)
     * [Using a background service](#using-background-service)
     * [Using a broadcast receiver](#using-broadcast-receiver)
-* [Handling result](#handling-result)
+* [Handling result](#handling-the-result)
 * [Adding logging](#adding-logging)
 * [Proguard rules](#proguard-rules)
 * [Go live](#go-live)
@@ -20,11 +20,12 @@
 
 ## Overview
 
-TODO Overview with images and gifs here -------
+The Android SDK allows you to add the Veriff verification flow to your native Android application.
+The documentation for Veriff backend integration can be found [here](https://developers.veriff.me/).
 
 ## Adding the sdk
 
-Add two new maven repository destination under the root ```build.gradle``` repositories tag in allprojects section.
+Add two new maven repository destinations under the root ```build.gradle``` repositories tag in allprojects section.
 It should contain the following maven repositories:
 ```gradle
     allprojects {
@@ -39,7 +40,7 @@ It should contain the following maven repositories:
 ```
 Add two dependencies in the application ```build.gradle``` :
 ```gradle
-    implementation 'com.veriff:veriff-library:2.1.1'
+    implementation 'com.veriff:veriff-library:2.3.0'
     implementation 'io.probity.sdk:collector:1.0.0'
 ```
 ## Starting the verification flow
@@ -53,27 +54,33 @@ Every Veriff SDK session is unique for a client. The session expires after 7 day
 but is valid until then. After the verification data is uploaded, the SDK v1.0 does not wait for the
 final verification result (async). The SDK v1.0 only notifies whether the verification data upload is successful or not.
 
-In vendor activity class define the result code and initialize the SDK class (required):
+In vendor activity class define the result code and initialize the SDK and launch the verification
+flow as below:
+
+| Parameters   | Description                                                  |
+| ------------ | ------------------------------------------------------------ |
+| baseUrl      | 'https://staging.veriff.me/v1/' for testing and 'https://magic.veriff.me/v1/' for production |
+| sessionToken | 'sessionToken' should be unique for each call. Check '/sessions' endpoint in the backend documentation [here](https://developers.veriff.me/) to learn how to generate one. |
 
 ```java
     Veriff.Builder veriffSDK = new Veriff.Builder(baseUrl, sessionToken);
-    //TODO add more details about baseUrl and session token
     veriffSDK.launch(MainActivity.this, REQUEST_VERIFF);
 ```
 
-## Get the verification status
+## Getting the verification status
 
 The verification result is sent to the vendor server in the background. (Reference for that is in the
-[API Spec document](#https://developers.veriff.me/) ). Veriff SDK sends callbacks to vendor`s mobile
+[API Spec document](https://developers.veriff.me/) ). Veriff SDK sends callbacks to vendor`s mobile
 application via onActivityResult, background service and broadcasts. The most reliable callback
 method is the background service because it’s usually waken up by the Android system services. All
-the mentioned ways return the same status codes so the vendor application developer can choose the
-preferred method and ignore the other ones. Refer to the [handling result](#handling-result) section for how to handle
-the response and what each staus means. Below are the ways you can capture the result after verification.
+the mentioned ways return the same status codes so the vendor application developer can choose their
+preferred method and ignore the other ones. Refer to the [handling result](#handling-result) section
+to see how to handle the response and what each staus code means. Different ways to capture the
+result are as below.
 
 ### In the activity
 
-For capturing the returning status from the SDK in the activity override ```onActivityResult``` in
+To capture the result from the SDK in the activity override ```onActivityResult``` in
 vendor activity that starts the verification flow:
 
 ```java
@@ -82,19 +89,18 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
    if (requestCode == REQUEST_VERIFF && data != null) {
        int statusCode = data.getIntExtra(VeriffConstants.INTENT_EXTRA_STATUS, Integer.MIN_VALUE);
        String sessionToken = data.getStringExtra(VeriffConstants.INTENT_EXTRA_SESSION_URL);
-
        handleResult(statusCode, sessionToken); //see below to know how to handle result
    }
    super.onActivityResult(requestCode, resultCode, data);
 }
 ```
 
-### Using background service
+### Using a background service
 
-For capturing the result using a background service.
+To capture the result from the SDK using a background service.
 
 ```java
-public class VeriffSDKStatusUpdatesService extends VeriffStatusUpdatesService {
+public class MyVeriffStatusUpdatesService extends VeriffStatusUpdatesService {
    @Override
    protected void onStatusChanged(String sessionToken, int statusCode) {
        handleResult(statusCode, sessionToken); //see below to know how to handle result
@@ -106,28 +112,26 @@ Add the service to the application manifest:
 
 ```xml
 <!-- Implement Veriff SDK updates service -->
-<service android:name=".service.VeriffSDKStatusUpdatesService">
+<service android:name=".MyVeriffStatusUpdatesService">
    <intent-filter>
        <action android:name="me.veriff.STATUS_UPDATE" />
    </intent-filter>
 </service>
 ```
 
-### Using broadcast receiver
+### Using a broadcast receiver
 
-For capturing the result via a broadcast receiver create a BroadcastReceiver which will listen to
+To capture the result using a broadcast receiver create a BroadcastReceiver which will listen to
 Veriff SDK broadcasts:
 
 ```java
 public class VeriffStatusReceiver extends BroadcastReceiver {
-
    @Override
    public void onReceive(Context context, Intent intent) {
        Bundle extras = intent.getExtras();
        if (extras.containsKey(VeriffConstants.INTENT_EXTRA_STATUS)) {
            int statusCode = data.getIntExtra(VeriffConstants.INTENT_EXTRA_STATUS, Integer.MIN_VALUE);
            String sessionToken = extras.getString(VeriffConstants.INTENT_EXTRA_SESSION_URL);
-
            handleResult(statusCode, sessionToken); //see below to know how to handle result
        }
    }
@@ -139,7 +143,7 @@ Add the receiver to the application manifest:
 ```xml
 <!-- Implement you own BroadcastReceiver to track VeriffSDK status, should be protected by "signature" permission -->
 <receiver
-android:name=".receiver.VeriffStatusReceiver"
+android:name=".VeriffStatusReceiver"
 android:permission="${applicationId}.VERIFF_STATUS_BROADCAST_PERMISSION">
    <intent-filter>
        <category android:name="${applicationId}" />
@@ -148,7 +152,7 @@ android:permission="${applicationId}.VERIFF_STATUS_BROADCAST_PERMISSION">
 </receiver>
 ```
 
-## Handling result
+## Handling the result
 
 All the three methods will return the same result which can be handled as below.
 
@@ -182,9 +186,10 @@ All the three methods will return the same result which can be handled as below.
     }
 ```
 
-## Adding logging
+## Adding error logging
 
-To turn on logging, you simply add your logging implementation instance(instance of LogAccess class)to the SDK before launching SDK like this:
+To turn on logging, you simply add your logging implementation instance(instance of LogAccess class)to
+the SDK before launching the SDK as shown below:
 
 ```java
     Veriff.setLoggingImplementation(<Instance of your logging class>);
@@ -303,7 +308,7 @@ To turn on logging, you simply add your logging implementation instance(instance
 
 ## Go Live
 
-Instructions on how to go live here -------
+Set **baseUrl** for initialising the SDK as 'https://magic.veriff.me/v1/'
 
 ## Releases
 
