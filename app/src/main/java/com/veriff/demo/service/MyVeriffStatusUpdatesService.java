@@ -3,7 +3,7 @@ package com.veriff.demo.service;
 import mobi.lab.veriff.data.VeriffConstants;
 import mobi.lab.veriff.service.VeriffStatusUpdatesService;
 
-public class VeriffSDKStatusUpdatesService extends VeriffStatusUpdatesService {
+public class MyVeriffStatusUpdatesService extends VeriffStatusUpdatesService {
 
     @Override
     protected void onStatusChanged(String sessionToken, int statusCode) {

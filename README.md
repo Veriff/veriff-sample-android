@@ -14,7 +14,6 @@
 * [Handling the result](#handling-the-result)
 * [Adding error logging](#adding-error-logging)
 * [Proguard rules](#proguard-rules)
-* [Going live](#going-live)
 * [Releases](#releases)
 * [Upgrading from SDK 1.* to 2.+](#upgrading-sdk)
 
@@ -23,11 +22,11 @@
 The Android SDK allows you to add the Veriff verification flow to your native Android application.
 The documentation for Veriff backend integration can be found [here](https://developers.veriff.me/).
 
-## Adding the sdk
+## Adding the SDK
 
 Add two new maven repository destinations under the root ```build.gradle``` repositories tag in allprojects section.
 It should contain the following maven repositories:
-```gradle
+``` java
     allprojects {
         repositories {
             maven { url "http://dl.bintray.com/argo/sdk" } //probity
@@ -38,8 +37,8 @@ It should contain the following maven repositories:
         }
     }
 ```
-Add two dependencies in the application ```build.gradle``` :
-```gradle
+Add two dependencies in the application ```build.gradle```:
+``` java
     implementation 'com.veriff:veriff-library:2.3.0'
     implementation 'io.probity.sdk:collector:1.0.0'
 ```
@@ -51,15 +50,14 @@ is identified other way with unique system pass. The vendor must be able to dete
 later, if application ends/ or returns. It depends entirely on the Vendor business logic.
 
 Every Veriff SDK session is unique for a client. The session expires after 7 days automatically,
-but is valid until then. After the verification data is uploaded, the SDK v1.0 does not wait for the
-final verification result (async). The SDK v1.0 only notifies whether the verification data upload is successful or not.
+but is valid until then.
 
 In vendor activity class define the result code and initialize the SDK and launch the verification
 flow as below:
 
 | Parameters   | Description                                                  |
 | ------------ | ------------------------------------------------------------ |
-| baseUrl      | 'https://staging.veriff.me/v1/' for testing and 'https://magic.veriff.me/v1/' for production |
+| baseUrl      | 'https://staging.veriff.me' for testing and 'https://magic.veriff.me' for production |
 | sessionToken | 'sessionToken' should be unique for each call. Check '/sessions' endpoint in the backend documentation [here](https://developers.veriff.me/) to learn how to generate one. |
 
 ```java
@@ -76,7 +74,8 @@ method is the background service because it’s usually waken up by the Android 
 the mentioned ways return the same status codes so the vendor application developer can choose their
 preferred method and ignore the other ones. Refer to the [handling result](#handling-the-result) section
 to see how to handle the response and what each staus code means. Different ways to capture the
-result are as below.
+result are as below. After the verification data is uploaded, SDK v1.0 does not wait for the
+final verification result (async). The SDK v1.0 only notifies whether the verification data upload is successful or not.
 
 ### In the activity
 
@@ -112,7 +111,8 @@ Add the service to the application manifest:
 
 ```xml
 <!-- Implement Veriff SDK updates service -->
-<service android:name=".MyVeriffStatusUpdatesService">
+<service android:name=".MyVeriffStatusUpdatesService"
+    android:exported="false">
    <intent-filter>
        <action android:name="me.veriff.STATUS_UPDATE" />
    </intent-filter>
@@ -188,7 +188,7 @@ All the three methods will return the same result which can be handled as below.
 
 ## Adding error logging
 
-To turn on logging, you simply add your logging implementation instance(instance of LogAccess class)to
+To turn on logging, you simply add your logging implementation instance (instance of LogAccess class) to
 the SDK before launching the SDK as shown below:
 
 ```java
@@ -306,10 +306,6 @@ the SDK before launching the SDK as shown below:
 -dontwarn com.koushikdutta.ion.conscrypt.ConscryptMiddleware
 ```
 
-## Going live
-
-Set **baseUrl** for initialising the SDK as 'https://magic.veriff.me/v1/'
-
 ## Releases
 
 Our release log can be found [here](https://github.com/Veriff/veriff-sample-android/blob/master/RELEASES.MD)
@@ -410,7 +406,7 @@ Delete both Firebase classes that extend **FirebaseInstanceIdService** and **Fir
   As a final step add the import for Veriff libary in the application build.gradle dependency list. It should contain the following two lines:
 
 ``` java
-  implementation 'com.veriff:veriff-library:2.1.1'
+  implementation 'com.veriff:veriff-library:2.3.0'
   implementation 'io.probity.sdk:collector:1.0.0'
 ```
 
