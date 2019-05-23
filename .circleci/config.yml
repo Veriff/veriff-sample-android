@@ -12,8 +12,6 @@ workflows:
           filters:
             tags:
               only: /.*/
-            branches:
-              only: /.*/
       - deploy_app_gate:
           type: approval
           requires:
@@ -22,7 +20,7 @@ workflows:
             tags:
               only: /.*/
             branches:
-              only: /master/
+              ignore: /.*/
       - deploy_app:
           context: mobile-sdk-playstore-publish
           requires:
@@ -31,7 +29,7 @@ workflows:
             tags:
               only: /.*/
             branches:
-              only: /master/
+              ignore: /.*/
 
 jobs:
   build_app:
