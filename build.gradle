@@ -17,8 +17,9 @@ allprojects {
         maven { url "https://cdn.veriff.me/android/" }
         google()
         jcenter()
-
     }
+
+    version = '2.3.0'
 }
 
 task clean(type: Delete) {
