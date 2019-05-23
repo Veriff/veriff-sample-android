@@ -101,12 +101,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void makeTokenRequest() {
         final TokenService tokenService = createRetrofit().create(TokenService.class);
-        String pay = "{\"verification\":{\"document\":{\"number\":\"B01234567\",\"type\":\"ID_CARD\",\"country\":\"EE\"},\"additionalData\":{\"placeOfResidence\":\"Tartu\",\"citizenship\":\"EE\"},\"timestamp\":\"2018-12-12T11:02:05.261Z\",\"lang\":\"et\",\"features\":[\"selfid\"],\"person\":{\"firstName\":\"Tundmatu\",\"idNumber\":\"38508260269\",\"lastName\":\"Toomas\"}}}";
-        TokenPayload load = GSON.fromJson(pay, TokenPayload.class);
-        String toBeHashed =  GSON.toJson(load) + API_SECRET;
+        TokenPayload payload = new TokenPayload(new TokenPayload.Verification(
+            new TokenPayload.Verification.Person("Tundmatu", "Toomas", "38508260269"),
+            null
+        ));
+        String toBeHashed =  GSON.toJson(payload) + API_SECRET;
         String signature = sha256(toBeHashed);
 
-        tokenService.getToken(signature, load).enqueue(new Callback<TokenResponse>() {
+        tokenService.getToken(signature, payload).enqueue(new Callback<TokenResponse>() {
             @Override
             public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
                 if (response.isSuccessful() && response.code() == REQUEST_SUCCESSFUL && response.body() != null) {
