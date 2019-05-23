@@ -20,12 +20,12 @@ public class TokenPayload {
 
     public static class Verification {
         private Document document;
-        private HashMap additionalData = new HashMap();
+        private HashMap additionalData;
         private Date timestamp = new Date();
         private String lang = "en";
-        private String[] features = new String[]{"selfId"};
+        private String[] features = new String[]{"selfid"};
         private Person person;
-        private String callback = "https://awesome.page";
+        private String callback;
 
         public Document getDocument() {
             return document;
