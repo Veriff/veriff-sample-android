@@ -2,16 +2,16 @@ package com.veriff.demo.screens.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.*
 import com.veriff.demo.R
-import com.veriff.demo.base.BaseActivity
 import com.veriff.demo.utils.GeneralUtils
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 
-class LoginScreenActivity : BaseActivity(), LoginMVP.View {
+class LoginScreenActivity : AppCompatActivity(), LoginMVP.View {
 
     private lateinit var presenter: LoginMVP.Presenter
 
@@ -104,7 +104,7 @@ class LoginScreenActivity : BaseActivity(), LoginMVP.View {
 
 
     companion object {
-        fun start(activity: BaseActivity) {
+        fun start(activity: AppCompatActivity) {
             activity.startActivity(Intent(activity, LoginScreenActivity::class.java))
         }
     }

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.ContextThemeWrapper
 import android.widget.Button
@@ -17,7 +18,7 @@ import com.veriff.demo.utils.GeneralUtils
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 
-class WelcomeScreenActivity : com.veriff.demo.base.BaseActivity(), WelcomeMVP.View {
+class WelcomeScreenActivity : AppCompatActivity(), WelcomeMVP.View {
 
     private lateinit var presenter: WelcomeMVP.Presenter
 

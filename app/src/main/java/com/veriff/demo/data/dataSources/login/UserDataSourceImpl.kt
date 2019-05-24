@@ -1,9 +1,6 @@
 package com.veriff.demo.data.dataSources.login
 
-import com.veriff.demo.AppConfig.Companion.PREF_ACCESS_TOKEN
-import com.veriff.demo.AppConfig.Companion.PREF_EXPIERES_IN
-import com.veriff.demo.AppConfig.Companion.PREF_LAST_LOGGED_IN
-import com.veriff.demo.AppConfig.Companion.PREF_REFRESH_TOKEN
+import com.veriff.demo.AppConfig
 import com.veriff.demo.data.LoginResponse
 import com.veriff.demo.data.dataSources.DataSourceCallback
 import com.veriff.demo.data.dataSources.getErrorDescription
@@ -26,15 +23,15 @@ class UserDataSourceImpl(private val appNetworkService: AppNetworkService,
                 if (response.isSuccessful) {
                     response.body()?.let {
                         it.accessToken?.let { token ->
-                            localStorage.saveString(PREF_ACCESS_TOKEN, token)
+                            localStorage.saveString(AppConfig.PREF_ACCESS_TOKEN, token)
                         }
                         it.refreshToken?.let { token ->
-                            localStorage.saveString(PREF_REFRESH_TOKEN, token)
+                            localStorage.saveString(AppConfig.PREF_REFRESH_TOKEN, token)
                         }
                         it.expiresIn?.let { expires ->
-                            localStorage.saveLong(PREF_EXPIERES_IN, expires.toMillis())
+                            localStorage.saveLong(AppConfig.PREF_EXPIRES_IN, expires.toMillis())
                         }
-                        localStorage.saveLong(PREF_LAST_LOGGED_IN, GeneralUtils.getCurrMillis())
+                        localStorage.saveLong(AppConfig.PREF_LAST_LOGGED_IN, GeneralUtils.getCurrMillis())
                         callback.gotData(it)
                     }
                 } else {
@@ -53,20 +50,20 @@ class UserDataSourceImpl(private val appNetworkService: AppNetworkService,
     }
 
     override fun getAccessToken(): String {
-        return localStorage.getString(PREF_ACCESS_TOKEN, "")
+        return localStorage.getString(AppConfig.PREF_ACCESS_TOKEN, "")
     }
 
 
     override fun getRefreshToken(): String {
-        return localStorage.getString(PREF_REFRESH_TOKEN, "")
+        return localStorage.getString(AppConfig.PREF_REFRESH_TOKEN, "")
     }
 
     override fun getLastLoggedInMillis(): Long {
-        return localStorage.getLong(PREF_LAST_LOGGED_IN, 0L)
+        return localStorage.getLong(AppConfig.PREF_LAST_LOGGED_IN, 0L)
     }
 
     override fun getExpiresIn(): Long {
-        return localStorage.getLong(PREF_EXPIERES_IN, 0L)
+        return localStorage.getLong(AppConfig.PREF_EXPIRES_IN, 0L)
     }
 }
 

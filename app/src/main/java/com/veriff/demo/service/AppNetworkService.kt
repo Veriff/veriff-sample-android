@@ -1,6 +1,7 @@
 package com.veriff.demo.service
 
-import com.veriff.demo.AppConfig.Companion.API_CLIENT_ID
+import com.veriff.demo.AppConfig
+import com.veriff.demo.AppConfig.API_CLIENT_ID
 import com.veriff.demo.data.LoginResponse
 import com.veriff.demo.data.TokenPayload
 import com.veriff.demo.data.TokenResponse
