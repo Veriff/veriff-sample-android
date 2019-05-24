@@ -1,6 +1,6 @@
 package com.veriff.demo.utils.stringFetcher
 
 
-interface StringFetcherI {
+interface StringFetcher {
     fun getString(id: Int): String
 }

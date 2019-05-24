@@ -16,5 +16,6 @@ interface WelcomeMVP : VeriffFlowMVP {
         abstract fun onSignInClicked()
         abstract fun onLogoutConfirmed()
         abstract fun onLogoutCancelled()
+        abstract fun parseQrCodeContents(contents: String): Pair<String?, String?>
     }
 }

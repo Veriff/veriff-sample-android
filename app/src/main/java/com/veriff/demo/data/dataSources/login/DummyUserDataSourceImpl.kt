@@ -6,7 +6,7 @@ import com.veriff.demo.data.dataSources.DataSourceCallback
 
 
 //used for testing while developing
-class DummyUserDataSource : UserDataSourceI {
+class DummyUserDataSourceImpl : UserDataSource {
 
     override fun login(email: String, password: String, callback: DataSourceCallback) {
         Handler().postDelayed({

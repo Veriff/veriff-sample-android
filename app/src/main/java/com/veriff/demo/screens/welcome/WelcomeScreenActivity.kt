@@ -9,7 +9,7 @@ import android.view.ContextThemeWrapper
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import com.veriff.demo.AppStatics
+import com.veriff.demo.AppConfig
 import com.veriff.demo.R
 import com.veriff.demo.SettingsActivity
 import com.veriff.demo.screens.login.LoginScreenActivity
@@ -51,7 +51,7 @@ class WelcomeScreenActivity : com.veriff.demo.base.BaseActivity(), WelcomeMVP.Vi
         supportActionBar!!.setDisplayShowTitleEnabled(false)
         toolbarMain.setNavigationIcon(R.drawable.ic_settings)
         toolbarMain.setNavigationOnClickListener {
-            startActivityForResult(SettingsActivity.createIntent(this), AppStatics.TOKEN_RESULT)
+            startActivityForResult(SettingsActivity.createIntent(this), AppConfig.TOKEN_RESULT)
         }
     }
 
@@ -107,7 +107,7 @@ class WelcomeScreenActivity : com.veriff.demo.base.BaseActivity(), WelcomeMVP.Vi
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == AppStatics.TOKEN_RESULT && resultCode == Activity.RESULT_OK) {
+        if (requestCode == AppConfig.TOKEN_RESULT && resultCode == Activity.RESULT_OK) {
             val contents = SettingsActivity.readExtra(data!!)
             presenter.parseQrCodeContents(contents)
         }

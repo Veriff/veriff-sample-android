@@ -1,7 +1,7 @@
 package com.veriff.demo.base
 
-import com.veriff.demo.AppStatics
-import com.veriff.demo.data.dataSources.sessionToken.SessionTokenDataSourceI.Callback
+import com.veriff.demo.AppConfig
+import com.veriff.demo.data.dataSources.sessionToken.SessionTokenDataSource.Callback
 
 interface VeriffFlowMVP : BaseMVP {
 
@@ -12,30 +12,10 @@ interface VeriffFlowMVP : BaseMVP {
 
     abstract class Presenter(private val view: View, private val model: VeriffFlowModel) : BaseMVP.BasePresenter {
 
-        private var sessionToken: String? = null
-        internal var baseUrl = AppStatics.URL_STAGING
+        internal var sessionToken: String? = null
+        internal var baseUrl = AppConfig.URL_STAGING
 
         abstract fun startVeriffFlow()
-
-        fun parseQrCodeContents(contents: String): Pair<String?, String?> {
-            val parsedContents = model.parseQrCodeContents(contents)
-            parsedContents.first?.let {
-                baseUrl = it
-            }
-            parsedContents.second?.let {
-                sessionToken = it
-            }
-
-            sessionToken?.let {
-                if (it.isNotEmpty()) {
-                    view.startVeriffFlow(it, baseUrl)
-                } else {
-                    view.showToast("No token available, try again")
-                }
-            }
-
-            return parsedContents
-        }
 
         fun makeTokenRequestForUser(accessToken: String) {
             model.getSessionTokenForUser(accessToken, object : Callback {

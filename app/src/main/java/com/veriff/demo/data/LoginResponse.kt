@@ -4,14 +4,14 @@ import com.google.gson.annotations.SerializedName
 
 data class LoginResponse(
         @SerializedName("token_type")
-        val tokenType: String = "",
+        val tokenType: String? = "",
 
         @SerializedName("access_token")
-        val accessToken: String = "",
+        val accessToken: String? = "",
 
         @SerializedName("refresh_token")
-        val refreshToken: String = "",
+        val refreshToken: String? = "",
 
         @SerializedName("expires_in")
-        val expiresIn: Long = 0L
+        val expiresIn: Long? = 0L
 )

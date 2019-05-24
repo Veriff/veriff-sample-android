@@ -3,7 +3,7 @@ package com.veriff.demo.utils
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import com.google.gson.Gson
-import com.veriff.demo.AppStatics
+import com.veriff.demo.AppConfig
 import com.veriff.demo.loging.Log
 import mobi.lab.veriff.data.ColorSchema
 import mobi.lab.veriff.data.Veriff
@@ -54,7 +54,7 @@ class GeneralUtils {
             val veriffSDK = Veriff.Builder(baseUrl, sessionToken)
             veriffSDK.setCustomColorSchema(schema)
 
-            veriffSDK.launch(activity, AppStatics.REQUEST_VERIFF)
+            veriffSDK.launch(activity, AppConfig.REQUEST_VERIFF)
         }
 
 
@@ -73,7 +73,7 @@ class GeneralUtils {
                     .build()
 
             retrofit = Retrofit.Builder()
-                    .baseUrl(AppStatics.URL_STAGING)
+                    .baseUrl(AppConfig.URL_STAGING)
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build()

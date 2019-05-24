@@ -1,6 +1,6 @@
 package com.veriff.demo.data.dataSources.sessionToken
 
-interface SessionTokenDataSourceI {
+interface SessionTokenDataSource {
 
     fun getToken(callback: Callback)
     fun getTokenForUser(accessToken: String, callback: Callback)

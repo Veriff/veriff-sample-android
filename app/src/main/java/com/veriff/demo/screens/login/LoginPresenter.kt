@@ -3,10 +3,10 @@ package com.veriff.demo.screens.login
 import com.veriff.demo.R
 import com.veriff.demo.data.LoginResponse
 import com.veriff.demo.data.dataSources.ModelCallback
-import com.veriff.demo.utils.stringFetcher.StringFetcherI
+import com.veriff.demo.utils.stringFetcher.StringFetcher
 
 class LoginPresenter(private val view: LoginMVP.View, model: LoginModel,
-                     private val stringFetcher: StringFetcherI,
+                     private val stringFetcher: StringFetcher,
                      private val loginModel: LoginModel) : LoginMVP.Presenter(view, model) {
 
 
@@ -31,12 +31,11 @@ class LoginPresenter(private val view: LoginMVP.View, model: LoginModel,
             allFieldsValid = false
         }
 
-
         if (allFieldsValid) {
             loginModel.login(email, password, callback = object : ModelCallback {
                 override fun gotData(data: Any?) {
                     if (data is LoginResponse) {
-                        makeTokenRequestForUser(data.accessToken)
+                        data.accessToken?.let { makeTokenRequestForUser(it) }
                         view.stopProgress()
                     }
                 }

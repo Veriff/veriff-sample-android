@@ -3,7 +3,7 @@ package com.veriff.demo.utils.localStorage
 import android.content.Context
 import android.content.SharedPreferences
 
-class SharedPrefLocalStorage(context: Context, name: String) : LocalStorageI {
+class SharedPrefLocalStorageImpl(context: Context, name: String) : LocalStorage {
 
     private var sharedPrefs: SharedPreferences = context.getSharedPreferences(name,
             Context.MODE_PRIVATE)
@@ -59,11 +59,4 @@ class SharedPrefLocalStorage(context: Context, name: String) : LocalStorageI {
         return sharedPrefs.getString(key, defValue)
     }
 
-    override fun saveObject(key: String, obj: Any) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getObject(key: String): Any? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 }

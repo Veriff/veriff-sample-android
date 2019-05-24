@@ -1,6 +1,6 @@
 package com.veriff.demo
 
-class AppStatics {
+class AppConfig {
 
 
     companion object {
