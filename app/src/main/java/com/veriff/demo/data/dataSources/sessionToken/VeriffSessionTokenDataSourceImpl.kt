@@ -14,16 +14,14 @@ import retrofit2.Response
 class VeriffSessionTokenDataSourceImpl(private val appNetworkService: AppNetworkService,
                                        private val gson: Gson) : SessionTokenDataSource {
 
-
-    private val payloadEst = "{\"verification\":{\"document\":{\"number\":\"B01234567\",\"type\":\"ID_CARD\",\"country\":\"EE\"},\"additionalData\":{\"placeOfResidence\":\"Tartu\",\"citizenship\":\"EE\"},\"timestamp\":\"2018-12-12T11:02:05.261Z\",\"lang\":\"et\",\"features\":[\"selfid\"],\"person\":{\"firstName\":\"Tundmatu\",\"idNumber\":\"38508260269\",\"lastName\":\"Toomas\"}}}"
-
-    private val payloadEng = "{\"verification\":{\"document\":{\"number\":\"B01234567\",\"type\":\"ID_CARD\",\"country\":\"EE\"},\"additionalData\":{\"placeOfResidence\":\"Tartu\",\"citizenship\":\"EE\"},\"timestamp\":\"2018-12-12T11:02:05.261Z\",\"lang\":\"en\",\"features\":[\"selfid\"],\"person\":{\"firstName\":\"Tundmatu\",\"idNumber\":\"38508260269\",\"lastName\":\"Toomas\"}}}"
+    private val payload = TokenPayload(TokenPayload.Verification(
+            TokenPayload.Verification.Person("Tundmatu", "Toomas",
+                    "38508260269"), null))
+    private val toBeHashed = gson.toJson(payload) + BuildConfig.API_SECRET
+    private val signature = GeneralUtils.sha256(toBeHashed)
 
     override fun getToken(callback: SessionTokenDataSource.Callback) {
-        val load = gson.fromJson(payloadEst, TokenPayload::class.java)
-        val toBeHashed = gson.toJson(load) + BuildConfig.API_SECRET
-        val signature = GeneralUtils.sha256(toBeHashed)
-        appNetworkService.getToken(signature, load).enqueue(object : Callback<TokenResponse> {
+        appNetworkService.getToken(signature, payload).enqueue(object : Callback<TokenResponse> {
             override fun onResponse(call: Call<TokenResponse>, response: Response<TokenResponse>) {
                 if (response.isSuccessful && response.code() == AppConfig.REQUEST_SUCCESSFUL && response.body() != null) {
                     response.body()?.verification?.sessionToken?.let { callback.gotToken(it) }
@@ -39,15 +37,12 @@ class VeriffSessionTokenDataSourceImpl(private val appNetworkService: AppNetwork
     }
 
     override fun getTokenForUser(accessToken: String, callback: SessionTokenDataSource.Callback) {
-        val load = gson.fromJson(payloadEng, TokenPayload::class.java)
-        val toBeHashed = gson.toJson(load) + BuildConfig.API_SECRET
-        val signature = GeneralUtils.sha256(toBeHashed)
         val headersMap = mapOf(
                 "X-AUTH-CLIENT" to AppConfig.API_CLIENT_ID,
                 "CONTENT-TYPE" to "application/json",
                 "Authorization" to "bearer $accessToken"
         )
-        appNetworkService.getTokenForUser(signature, load, headersMap).enqueue(object : Callback<TokenResponse> {
+        appNetworkService.getTokenForUser(signature, payload, headersMap).enqueue(object : Callback<TokenResponse> {
             override fun onResponse(call: Call<TokenResponse>, response: Response<TokenResponse>) {
                 if (response.isSuccessful && response.code() == AppConfig.REQUEST_SUCCESSFUL && response.body() != null) {
                     response.body()?.verification?.sessionToken?.let { callback.gotToken(it) }

@@ -36,7 +36,6 @@ class AppModule {
             single<Gson> {
                 GsonBuilder()
                         .registerTypeAdapter(Date::class.java, DateTypeAdapter())
-                        .serializeNulls()
                         .create()
             }
             single<AppNetworkService> {
