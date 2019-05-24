@@ -9,7 +9,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 2
-        versionName "2.3.0"
+        versionName version
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
@@ -51,7 +51,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.veriff:veriff-library:2.3.0'
+    implementation "com.veriff:veriff-library:$version"
     implementation 'io.probity.sdk:collector:1.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.android.support:appcompat-v7:28.0.0'
