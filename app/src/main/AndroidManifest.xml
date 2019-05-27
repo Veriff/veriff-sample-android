@@ -5,34 +5,40 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.hardware.camera" />
-    <uses-permission android:name="android.hardware.camera.autofocus" />
-    <!-- "signature" permission granted automatically by system, without notifying user. -->
+    <uses-permission android:name="android.hardware.camera.autofocus" /> <!-- "signature" permission granted automatically by system, without notifying user. -->
     <uses-permission android:name="${applicationId}.VERIFF_STATUS_BROADCAST_PERMISSION" />
-    <!-- Implement you own BroadcastReceiver to track VeriffSDK status, should be protected by "signature" permission -->
 
     <application
+        android:name=".MainApplication"
+        android:allowBackup="true"
+        android:fullBackupContent="@xml/full_backup_content"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:allowBackup="true"
-        android:fullBackupContent="@xml/full_backup_content"
-        tools:replace="android:label">
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+        tools:replace="android:label"
+        tools:ignore="GoogleAppIndexingWarning">
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="c5da9c05cd288a90e5ce40cdf7200957fd057e72"
-            />
+            android:value="c5da9c05cd288a90e5ce40cdf7200957fd057e72" />
+
         <activity
-            android:name=".MainActivity"
+            android:name=".screens.welcome.WelcomeScreenActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".screens.login.LoginScreenActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
             android:name=".SettingsActivity"
@@ -43,6 +49,7 @@
             android:permission="${applicationId}.VERIFF_STATUS_BROADCAST_PERMISSION">
             <intent-filter>
                 <category android:name="${applicationId}" />
+
                 <action android:name="veriff.info.status" />
             </intent-filter>
         </receiver>

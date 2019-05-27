@@ -58,8 +58,6 @@ public class TokenPayload {
         public Verification(Person person, Document document) {
             this.person = person;
             this.document = document;
-
-
         }
 
         public static class Person {
