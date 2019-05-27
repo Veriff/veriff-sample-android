@@ -39,7 +39,7 @@ It should contain the following maven repositories:
 ```
 Add two dependencies in the application ```build.gradle```:
 ``` java
-    implementation 'com.veriff:veriff-library:2.3.0'
+    implementation 'com.veriff:veriff-library:2.3.1'
     implementation 'io.probity.sdk:collector:1.0.0'
 ```
 ## Starting the verification flow
@@ -304,6 +304,9 @@ the SDK before launching the SDK as shown below:
 -keep class com.google.gson.stream.** { *; }
 
 -dontwarn com.koushikdutta.ion.conscrypt.ConscryptMiddleware
+
+# WebRTC classes, accessed from native via JNI
+-keep class org.webrtc.** { *; }
 ```
 
 ## Releases
@@ -406,7 +409,7 @@ Delete both Firebase classes that extend **FirebaseInstanceIdService** and **Fir
   As a final step add the import for Veriff libary in the application build.gradle dependency list. It should contain the following two lines:
 
 ``` java
-  implementation 'com.veriff:veriff-library:2.3.0'
+  implementation 'com.veriff:veriff-library:2.3.1'
   implementation 'io.probity.sdk:collector:1.0.0'
 ```
 
