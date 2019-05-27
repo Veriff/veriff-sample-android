@@ -1,6 +1,7 @@
 package com.veriff.demo.screens.welcome
 
 import com.veriff.demo.R
+import com.veriff.demo.base.VeriffFlowMVP
 import com.veriff.demo.screens.login.LoginModel
 import com.veriff.demo.utils.qrCodeParser.QrCodeContentsParser
 import com.veriff.demo.utils.stringFetcher.StringFetcher
@@ -9,7 +10,7 @@ class WelcomePresenter(private val view: WelcomeMVP.View, model: WelcomeModel,
                        private val qrCodeContentsParser: QrCodeContentsParser,
                        private val loginModel: LoginModel,
                        private val stringFetcher: StringFetcher) :
-        WelcomeMVP.Presenter(view, model) {
+        VeriffFlowMVP.Presenter(view, model) {
 
 
     override fun start() {
@@ -20,7 +21,7 @@ class WelcomePresenter(private val view: WelcomeMVP.View, model: WelcomeModel,
         }
     }
 
-    override fun parseQrCodeContents(contents: String): Pair<String?, String?> {
+    fun parseQrCodeContents(contents: String): Pair<String?, String?> {
         val parsedContents = qrCodeContentsParser.parseQrCodeContents(contents)
         parsedContents.first?.let {
             baseUrl = it
@@ -40,7 +41,7 @@ class WelcomePresenter(private val view: WelcomeMVP.View, model: WelcomeModel,
         return parsedContents
     }
 
-    override fun onSignInClicked() {
+    fun onSignInClicked() {
         if (loginModel.isLoggedIn()) {
             view.showLogoutConfirmation()
 
@@ -49,13 +50,13 @@ class WelcomePresenter(private val view: WelcomeMVP.View, model: WelcomeModel,
         }
     }
 
-    override fun onLogoutConfirmed() {
+    fun onLogoutConfirmed() {
         loginModel.logout()
         view.setLoggedOutView()
         view.showToast(stringFetcher.run { getString(R.string.signed_out) })
     }
 
-    override fun onLogoutCancelled() {}
+    fun onLogoutCancelled() {}
 
     override fun startVeriffFlow() {
         makeTokenRequest()

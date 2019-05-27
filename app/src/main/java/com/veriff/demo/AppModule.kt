@@ -61,7 +61,7 @@ class AppModule {
                         sessionTokenDataSource = get()
                 )
             }
-            factory<WelcomeMVP.Presenter> { (view: WelcomeMVP.View) ->
+            factory { (view: WelcomeMVP.View) ->
                 WelcomePresenter(
                         model = get(),
                         view = view,

@@ -20,7 +20,7 @@ import org.koin.core.parameter.parametersOf
 
 class WelcomeScreenActivity : AppCompatActivity(), WelcomeMVP.View {
 
-    private lateinit var presenter: WelcomeMVP.Presenter
+    private lateinit var presenter: WelcomePresenter
 
     private lateinit var btnLaunchVeriffFlow: Button
     private lateinit var txtSignIn: TextView
