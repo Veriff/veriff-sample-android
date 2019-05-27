@@ -95,11 +95,7 @@ jobs:
           command: |
             pip install google-api-python-client oauth2client --upgrade --user
       - run:
-          name: "Checkout infra-tools"
-          command: |
-            git clone git@github.com:Veriff/infra-tools.git
-      - run:
           name: "Publish to Google Play internal track"
           command: |
             echo "${PLAY_P12_KEY}" | base64 --decode > key.p12
-            ./infra-tools/scripts/publish_to_google_play.py "${PLAY_SERVICE_EMAIL}" key.p12 "${PLAY_P12_KEY_PASSPHRASE}" /tmp/artifacts/app-release.apk com.veriff.demo internal
+            ~/repo/.circleci/publish_to_google_play.py "${PLAY_SERVICE_EMAIL}" key.p12 "${PLAY_P12_KEY_PASSPHRASE}" /tmp/artifacts/app-release.apk com.veriff.demo internal
