@@ -1,13 +1,14 @@
 package com.veriff.demo.screens.login
 
 import com.veriff.demo.R
+import com.veriff.demo.base.VeriffFlowMVP
 import com.veriff.demo.data.LoginResponse
 import com.veriff.demo.data.dataSources.ModelCallback
 import com.veriff.demo.utils.stringFetcher.StringFetcher
 
 class LoginPresenter(private val view: LoginMVP.View, model: LoginModel,
                      private val stringFetcher: StringFetcher,
-                     private val loginModel: LoginModel) : LoginMVP.Presenter(view, model) {
+                     private val loginModel: LoginModel) : VeriffFlowMVP.Presenter(view, model) {
 
 
     override fun start() {}
@@ -18,7 +19,7 @@ class LoginPresenter(private val view: LoginMVP.View, model: LoginModel,
         makeTokenRequest()
     }
 
-    override fun login(email: String, password: String) {
+    fun login(email: String, password: String) {
         view.showProgress()
         var allFieldsValid = true
         if (email.isEmpty()) {

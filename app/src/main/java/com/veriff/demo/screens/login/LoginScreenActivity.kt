@@ -13,8 +13,7 @@ import org.koin.core.parameter.parametersOf
 
 class LoginScreenActivity : AppCompatActivity(), LoginMVP.View {
 
-    private lateinit var presenter: LoginMVP.Presenter
-
+    private lateinit var presenter: LoginPresenter
     private lateinit var btnLogin: FrameLayout
     private lateinit var txtEmail: EditText
     private lateinit var txtPassword: EditText

@@ -10,8 +10,6 @@ interface LoginMVP : VeriffFlowMVP {
         fun showLoginError(msg: String)
     }
 
-    abstract class Presenter(view: View, model: LoginModel)
-        : VeriffFlowMVP.Presenter(view, model as VeriffFlowModel) {
-        abstract fun login(email: String, password: String)
-    }
+//    abstract class Presenter(view: View, model: LoginModel)
+//        : VeriffFlowMVP.Presenter(view, model as VeriffFlowModel)
 }

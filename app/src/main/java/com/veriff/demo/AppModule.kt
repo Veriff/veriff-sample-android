@@ -79,7 +79,7 @@ class AppModule {
                         userDataSource = get(named("network"))
                 )
             }
-            factory<LoginMVP.Presenter> { (view: LoginMVP.View) ->
+            factory { (view: LoginMVP.View) ->
                 LoginPresenter(
                         view = view,
                         model = get(),
