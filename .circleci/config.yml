@@ -93,7 +93,7 @@ jobs:
       - run:
           name: "Install google-api-python-client"
           command: |
-            pip install google-api-python-client oauth2client --upgrade --user
+            pip install google-api-python-client oauth2client pyOpenSSL --upgrade --user
       - run:
           name: "Publish to Google Play internal track"
           command: |
