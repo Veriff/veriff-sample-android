@@ -36,7 +36,6 @@ track_result = service.edits().tracks().update(
     track=track,
     packageName=package_name,
     body={u'releases': [{
-        u'name': apk_result['versionName'],
         u'versionCodes': [str(apk_result['versionCode'])],
         u'status': u'completed',
     }]}).execute()
