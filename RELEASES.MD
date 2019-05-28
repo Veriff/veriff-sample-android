@@ -1,4 +1,9 @@
 ### Latest Android SDK releases
+<details><summary>Release 2.3.2</summary>
+<ul>
+	<li>Critical hot fix for 2.3.1</li>
+</ul>
+</details>
 <details><summary>Release 2.3.1</summary>
 <ul>
 	<li>Removed setting custom color schema and background image</li>
