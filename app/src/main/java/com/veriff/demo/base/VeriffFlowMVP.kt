@@ -13,7 +13,7 @@ interface VeriffFlowMVP : BaseMVP {
     abstract class Presenter(private val view: View, private val model: VeriffFlowModel) : BaseMVP.BasePresenter {
 
         internal var sessionToken: String? = null
-        internal var baseUrl = AppConfig.URL_STAGING
+        internal var baseUrl = AppConfig.BASE_URL
 
         abstract fun startVeriffFlow()
 

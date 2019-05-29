@@ -16,10 +16,10 @@ buildscript {
 
 allprojects {
     repositories {
-        maven { url "http://dl.bintray.com/argo/sdk" }
-        maven { url "https://cdn.veriff.me/android/" }
         google()
         jcenter()
+        maven { url "http://dl.bintray.com/argo/sdk" }
+        maven { url "https://cdn.veriff.me/android/" }
     }
 
     version = '2.3.2'

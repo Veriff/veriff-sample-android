@@ -73,7 +73,7 @@ class GeneralUtils {
                     .build()
 
             retrofit = Retrofit.Builder()
-                    .baseUrl(AppConfig.URL_STAGING)
+                    .baseUrl(AppConfig.BASE_URL)
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build()

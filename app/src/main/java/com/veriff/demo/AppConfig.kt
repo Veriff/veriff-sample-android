@@ -1,8 +1,8 @@
 package com.veriff.demo
 
 object AppConfig {
-    const val URL_STAGING = "https://front3.staging.vrff.io/"
-    const val API_CLIENT_ID = "24d887f4-ad3e-43da-bc98-c8099ad6f430"
+    const val BASE_URL = BuildConfig.ROOT_URL
+    const val API_CLIENT_ID = BuildConfig.API_CLIENT_ID
     const val TOKEN_RESULT = 101
     const val REQUEST_VERIFF = 8000
     const val REQUEST_SUCCESSFUL = 201
