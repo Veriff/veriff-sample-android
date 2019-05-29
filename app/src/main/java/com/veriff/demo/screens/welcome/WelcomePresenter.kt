@@ -59,7 +59,12 @@ class WelcomePresenter(private val view: WelcomeMVP.View, model: WelcomeModel,
     fun onLogoutCancelled() {}
 
     override fun startVeriffFlow() {
-        makeTokenRequest()
+        if (loginModel.isLoggedIn()) {
+            makeTokenRequestForUser(loginModel.getAccessToken())
+        } else {
+            makeTokenRequest()
+        }
+
     }
 
     override fun cancel() {}

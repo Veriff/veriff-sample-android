@@ -12,7 +12,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class VeriffSessionTokenDataSourceImpl(private val appNetworkService: AppNetworkService,
-                                       private val gson: Gson) : SessionTokenDataSource {
+                                       gson: Gson) : SessionTokenDataSource {
 
     private val payload = TokenPayload(TokenPayload.Verification(
             TokenPayload.Verification.Person("Tundmatu", "Toomas",

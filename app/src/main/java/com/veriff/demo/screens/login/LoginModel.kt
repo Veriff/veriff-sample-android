@@ -39,6 +39,10 @@ class LoginModel(sessionTokenDataSource: SessionTokenDataSource,
         return false
     }
 
+    fun getAccessToken(): String {
+        return userDataSource.getAccessToken()
+    }
+
     fun logout() {
         userDataSource.logout()
     }

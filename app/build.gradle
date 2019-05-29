@@ -32,10 +32,12 @@ android {
             signingConfig signingConfigs.releaseSigning
             buildConfigField("String", "API_SECRET", "\"" + System.getenv("VERIFF_API_SECRET") + "\"")
             minifyEnabled false
+            buildConfigField('String', 'ROOT_URL', "\"https://magic.veriff.me/\"")
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             signingConfig signingConfigs.defaultSigning
+            buildConfigField('String', 'ROOT_URL', "\"https://front3.staging.vrff.io/\"")
             buildConfigField("String", "API_SECRET", "\"" + System.getenv("VERIFF_API_SECRET") + "\"")
         }
     }
@@ -73,9 +75,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
-//It will create a new task(s) based on your application variants within (run) group
-//sample: ./gradlew installRunDebug
-//sample: ./gradlew installRunStagDebug
 android.applicationVariants.all { variant ->
     task "installRun${variant.name.capitalize()}"(type: Exec, dependsOn: variant.installProvider, group: "run") {
         commandLine = ["adb", "shell", "monkey", "-p", variant.applicationId + " 1"]
