@@ -8,8 +8,8 @@ android {
         applicationId "com.veriff.demo"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 4
-        versionName version
+        versionCode 5
+        versionName lib_version+"-"+versionCode
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
@@ -55,7 +55,7 @@ android {
 }
 
 dependencies {
-    implementation "com.veriff:veriff-library:$version"
+    implementation "com.veriff:veriff-library:$lib_version"
     implementation 'io.probity.sdk:collector:1.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.android.support:appcompat-v7:28.0.0'
