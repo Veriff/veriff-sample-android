@@ -1,4 +1,13 @@
 ### Latest Android SDK releases
+<details><summary>Release 2.3.4</summary>
+<ul>
+	<li>Country list is now translated</li>
+	<li>Fixed a lot of camera issues on various devices</li>
+	<li>Fixed "Internet connection lost" popping up after verification flow was completed</li>
+	<li>Fixed country selection screen being partially translated</li>
+	<li>Updated translation</li>
+</ul>
+</details>
 <details><summary>Release 2.3.2</summary>
 <ul>
 	<li>Critical hot fix for 2.3.1</li>
