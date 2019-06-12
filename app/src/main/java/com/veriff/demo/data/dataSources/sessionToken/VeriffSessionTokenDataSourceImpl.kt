@@ -14,9 +14,8 @@ import retrofit2.Response
 class VeriffSessionTokenDataSourceImpl(private val appNetworkService: AppNetworkService,
                                        gson: Gson) : SessionTokenDataSource {
 
-    private val payload = TokenPayload(TokenPayload.Verification(
-            TokenPayload.Verification.Person("Tundmatu", "Toomas",
-                    "38508260269"), null))
+    private val payload = TokenPayload(TokenPayload.Verification(TokenPayload.Verification.
+            Person("Tundmatu", "Toomas", ""), null))
     private val toBeHashed = gson.toJson(payload) + BuildConfig.API_SECRET
     private val signature = GeneralUtils.sha256(toBeHashed)
 
