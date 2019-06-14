@@ -105,6 +105,14 @@ class WelcomeScreenActivity : AppCompatActivity(), WelcomeMVP.View {
 
     }
 
+    override fun disableSessionGeneration() {
+        btnLaunchVeriffFlow.isEnabled = false
+    }
+
+    override fun enableSessionGeneration() {
+        btnLaunchVeriffFlow.isEnabled = true
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 

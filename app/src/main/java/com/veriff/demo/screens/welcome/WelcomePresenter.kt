@@ -19,6 +19,8 @@ class WelcomePresenter(private val view: WelcomeMVP.View, model: WelcomeModel,
         } else {
             view.setLoggedOutView()
         }
+
+        view.enableSessionGeneration()
     }
 
     fun parseQrCodeContents(contents: String): Pair<String?, String?> {
