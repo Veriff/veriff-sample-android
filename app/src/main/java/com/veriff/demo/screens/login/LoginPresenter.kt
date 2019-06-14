@@ -11,7 +11,9 @@ class LoginPresenter(private val view: LoginMVP.View, model: LoginModel,
                      private val loginModel: LoginModel) : VeriffFlowMVP.Presenter(view, model) {
 
 
-    override fun start() {}
+    override fun start() {
+        view.enableSessionGeneration()
+    }
 
     override fun cancel() {}
 
@@ -33,6 +35,7 @@ class LoginPresenter(private val view: LoginMVP.View, model: LoginModel,
         }
 
         if (allFieldsValid) {
+            view.disableSessionGeneration()
             loginModel.login(email, password, callback = object : ModelCallback {
                 override fun gotData(data: Any?) {
                     if (data is LoginResponse) {
@@ -42,6 +45,7 @@ class LoginPresenter(private val view: LoginMVP.View, model: LoginModel,
                 }
 
                 override fun error(msg: String) {
+                    view.enableSessionGeneration()
                     view.showToast(msg)
                     view.stopProgress()
                 }

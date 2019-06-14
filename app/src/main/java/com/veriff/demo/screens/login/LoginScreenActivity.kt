@@ -108,4 +108,12 @@ class LoginScreenActivity : AppCompatActivity(), LoginMVP.View {
         }
     }
 
+    override fun disableSessionGeneration() {
+        btnLogin.isEnabled = false
+    }
+
+    override fun enableSessionGeneration() {
+        btnLogin.isEnabled = true
+    }
+
 }
