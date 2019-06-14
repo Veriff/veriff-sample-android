@@ -42,6 +42,12 @@ Add two dependencies in the application ```build.gradle```:
     implementation 'com.veriff:veriff-library:2.3.4'
     implementation 'io.probity.sdk:collector:1.0.0'
 ```
+
+#### Permissions
+
+The SDK requests for all the permissions it needs, please make sure that the CAMERA, RECORD_AUDIO and WRITE_EXTERNAL_STORAGE permissions are
+not expliciity removed using ```tools:node="remove"``` in your app`s manifest file. Ignore this if you are not explicitly removing any permissions.
+
 ## Starting the verification flow
 
 The verification process must be launched inside the vendor specific Activity class.
