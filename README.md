@@ -45,8 +45,8 @@ Add two dependencies in the application ```build.gradle```:
 
 #### Permissions
 
-The SDK requests for all the permissions it needs, please make sure that the CAMERA, RECORD_AUDIO and WRITE_EXTERNAL_STORAGE permissions are
-not expliciity removed using ```tools:node="remove"``` in your app`s manifest file. Ignore this if you are not explicitly removing any permissions.
+The SDK will request all the permissions it needs, please make sure that the CAMERA, RECORD_AUDIO, and WRITE_EXTERNAL_STORAGE permissions are 
+not explicitly removed using ```tools:node="remove"``` in your app`s manifest file. Ignore this if you are not explicitly removing any permissions.
 
 ## Starting the verification flow
 
