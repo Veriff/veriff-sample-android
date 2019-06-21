@@ -1,4 +1,13 @@
 ### Latest Android SDK releases
+<details><summary>Release 2.3.5</summary>
+<ul>
+	<li>Fixed WebRtc client issues</li>
+	<li>Fixed OnePlus 6T focusing issue</li>
+	<li>Added option to enable verbose webrtc logging</li>
+	<li>Other camera/webrtc fixes and improvements</li>
+	<li>Language fixes for cancel dialog and instructions screen</li>
+</ul>
+</details>
 <details><summary>Release 2.3.4</summary>
 <ul>
 	<li>Country list is now translated</li>
