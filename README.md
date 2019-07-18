@@ -39,7 +39,7 @@ It should contain the following maven repositories:
 ```
 Add two dependencies in the application ```build.gradle```:
 ``` java
-    implementation 'com.veriff:veriff-library:2.3.6'
+    implementation 'com.veriff:veriff-library:2.4.0'
     implementation 'io.probity.sdk:collector:1.0.0'
 ```
 
@@ -415,7 +415,7 @@ Delete both Firebase classes that extend **FirebaseInstanceIdService** and **Fir
   As a final step add the import for Veriff libary in the application build.gradle dependency list. It should contain the following two lines:
 
 ``` java
-  implementation 'com.veriff:veriff-library:2.3.6'
+  implementation 'com.veriff:veriff-library:2.4.0'
   implementation 'io.probity.sdk:collector:1.0.0'
 ```
 

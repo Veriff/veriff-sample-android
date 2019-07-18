@@ -1,4 +1,13 @@
 ### Latest Android SDK releases
+<details><summary>Release 2.4.0</summary>
+<ul>
+	<li>Increased minSdkVersion to 21</li>
+	<li>Added video mandatory flag</li>
+	<li>Increased socket write timeout when uploading</li>
+	<li>Added Arabic support</li>
+	<li>Other camera/webrtc fixes and improvements</li>
+</ul>
+</details>
 <details><summary>Release 2.3.6</summary>
 <ul>
 	<li>Added new languages: Georgian, Hindi, Malay, Ukranian</li>
