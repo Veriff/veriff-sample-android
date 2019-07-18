@@ -1,4 +1,10 @@
 ### Latest Android SDK releases
+<details><summary>Release 2.3.6</summary>
+<ul>
+	<li>Added new languages: Georgian, Hindi, Malay, Ukranian</li>
+	<li>Fixed multiple copy issues</li>
+</ul>
+</details>
 <details><summary>Release 2.3.5</summary>
 <ul>
 	<li>Fixed WebRtc client issues</li>
