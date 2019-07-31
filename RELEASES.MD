@@ -2,7 +2,7 @@
 <details><summary>Release 2.4.1</summary>
 <ul>
 	<li>Added encryption for photos in internal storage</li>
-	<li>Moved Probity collector into SDK, removing the external depency on it</li>
+	<li>Moved Probity collector into SDK, removing the external dependency on it</li>
 	<li>Camera/webrtc fixes and improvements</li>
 	<li>Various small fixes and improvements</li>
 </ul>
