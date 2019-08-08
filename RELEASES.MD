@@ -1,4 +1,9 @@
 ### Latest Android SDK releases
+<details><summary>Release 2.4.2</summary>
+<ul>
+	<li>Fixed an issue with capturing photos on Android 5.x devices</li>
+</ul>
+</details>
 <details><summary>Release 2.4.1</summary>
 <ul>
 	<li>Added encryption for photos in internal storage</li>

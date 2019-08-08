@@ -24,7 +24,7 @@ The documentation for Veriff backend integration can be found [here](https://dev
 
 ## Adding the SDK
 
-Add two new maven repository destinations under the root ```build.gradle``` repositories tag in allprojects section.
+Add a maven repository destination under the root ```build.gradle``` repositories tag in the allprojects section.
 It should contain the following maven repositories:
 ``` java
     allprojects {
@@ -36,9 +36,9 @@ It should contain the following maven repositories:
         }
     }
 ```
-Add two dependencies in the application ```build.gradle```:
+Add a dependency to the application ```build.gradle```:
 ``` java
-    implementation 'com.veriff:veriff-library:2.4.1'
+    implementation 'com.veriff:veriff-library:2.4.2'
 ```
 
 #### Permissions
@@ -371,12 +371,11 @@ Delete both Firebase classes that extend **FirebaseInstanceIdService** and **Fir
       }
   }
 ```
-  Add a new maven repository destination under the root build.gradle repositories tag in allprojects bracket. It should contain the following two maven repositories:
+  Add a new maven repository destination under the root build.gradle repositories tag in allprojects bracket. It should contain the following maven repositories:
 
 ``` java
   allprojects {
       repositories {
-          maven { url "http://dl.bintray.com/argo/sdk" } //probity
           maven { url "https://cdn.veriff.me/android/" } //veriff
           google()
           jcenter()
@@ -410,10 +409,10 @@ Delete both Firebase classes that extend **FirebaseInstanceIdService** and **Fir
 ``` java
   VeriffConstants.STATUS_OUT_OF_BUSINESS_HOURS, VeriffConstants.STATUS_UNABLE_TO_RECORD_AUDIO and VeriffConstants.STATUS_VIDEO_CALL_ENDED
 ```
-  As a final step add the import for Veriff libary in the application build.gradle dependency list. It should contain the following two lines:
+  As a final step add the import for Veriff libary in the application build.gradle dependency list. It should contain the following line:
 
 ``` java
-  implementation 'com.veriff:veriff-library:2.4.1'
+  implementation 'com.veriff:veriff-library:2.4.2'
 ```
 
 
