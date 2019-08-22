@@ -1,4 +1,14 @@
 ### Latest Android SDK releases
+<details><summary>Release 2.4.3</summary>
+<ul>
+    <li>New intro screen outlining the verification flow</li>
+    <li>Added Turkish language</li>
+    <li>Fixed videos being broken from Samsung 6.x-7.x devices</li>
+    <li>Fixed a few crashes</li>
+    <li>Fixed Veriff title bar clashing with system statusbar on some Android versions</li>
+    <li>Fixed country list keyboard behaviour on Android 5.0</li>
+</ul>
+</details>
 <details><summary>Release 2.4.2</summary>
 <ul>
 	<li>Fixed an issue with capturing photos on Android 5.x devices</li>

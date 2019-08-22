@@ -16,7 +16,7 @@ buildscript {
 
 ext {
     if (!project.hasProperty('lib_version')) {
-        lib_version = '2.4.2'
+        lib_version = '2.4.3'
     }
 }
 
