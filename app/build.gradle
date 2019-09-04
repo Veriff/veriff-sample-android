@@ -8,7 +8,7 @@ android {
         applicationId "com.veriff.demo"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 19
+        versionCode 20
         versionName lib_version+"-"+versionCode
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

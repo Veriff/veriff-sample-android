@@ -1,4 +1,9 @@
 ### Latest Android SDK releases
+<details><summary>Release 2.4.5</summary>
+<ul>
+    <li>Fixed dark room warning not being translated</li>
+</ul>
+</details>
 <details><summary>Release 2.4.4</summary>
 <ul>
     <li>Added Japanese language</li>
