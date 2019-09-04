@@ -1,4 +1,11 @@
 ### Latest Android SDK releases
+<details><summary>Release 2.4.4</summary>
+<ul>
+    <li>Added Japanese language</li>
+    <li>Added dark room detection</li>
+    <li>Fixed a few issues around ending the video session</li>
+</ul>
+</details>
 <details><summary>Release 2.4.3</summary>
 <ul>
     <li>New intro screen outlining the verification flow</li>

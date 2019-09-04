@@ -38,7 +38,7 @@ It should contain the following maven repositories:
 ```
 Add a dependency to the application ```build.gradle```:
 ``` java
-    implementation 'com.veriff:veriff-library:2.4.3'
+    implementation 'com.veriff:veriff-library:2.4.4'
 ```
 
 #### Permissions
@@ -412,7 +412,7 @@ Delete both Firebase classes that extend **FirebaseInstanceIdService** and **Fir
   As a final step add the import for Veriff libary in the application build.gradle dependency list. It should contain the following line:
 
 ``` java
-  implementation 'com.veriff:veriff-library:2.4.3'
+  implementation 'com.veriff:veriff-library:2.4.4'
 ```
 
 
