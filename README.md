@@ -15,7 +15,6 @@
 * [Adding error logging](#adding-error-logging)
 * [Proguard rules](#proguard-rules)
 * [Releases](#releases)
-* [Upgrading from SDK 1.* to 2.+](#upgrading-sdk)
 
 ## Overview
 
@@ -38,7 +37,7 @@ It should contain the following maven repositories:
 ```
 Add a dependency to the application ```build.gradle```:
 ``` java
-    implementation 'com.veriff:veriff-library:2.4.5'
+    implementation 'com.veriff:veriff-library:2.4.6'
 ```
 
 #### Permissions
@@ -227,19 +226,16 @@ the SDK before launching the SDK as shown below:
 #}
 
 # Application classes that will be serialized/deserialized over Gson
--keep class mobi.lab.veriff.data.** { *; }
+-keepclasseswithmembers,allowobfuscation,includedescriptorclasses class * {
+    @com.google.gson.annotations.SerializedName <fields>;
+}
 
 -dontwarn mobi.lab.veriff.fragment.BaseFragment
-
 
 -keepparameternames
 -renamesourcefileattribute SourceFile
 -keepattributes Exceptions,InnerClasses,Signature,Deprecated,
                 SourceFile,LineNumberTable,*Annotation*,EnclosingMethod
-
--keep public class * {
-    public protected *;
-}
 
 -keepclassmembernames class * {
     java.lang.Class class$(java.lang.String);
@@ -265,15 +261,8 @@ the SDK before launching the SDK as shown below:
 }
 
 # OkHttp
--keepattributes Signature
--keepattributes *Annotation*
--keep class okhttp3.** { *; }
--keep interface okhttp3.** { *; }
 -dontwarn okhttp3.**
-
--dontwarn com.fasterxml.jackson.databind.ext.DOMSerializer
--dontwarn io.jsonwebtoken.impl.Base64Codec
--dontwarn io.jsonwebtoken.impl.crypto.EllipticCurveProvider
+-dontwarn okio.**
 
 ## RETROFIT 2 ##
 -dontwarn javax.annotation.**
@@ -287,21 +276,7 @@ the SDK before launching the SDK as shown below:
 -keepattributes Exceptions
 ## RETROFIT 2 ##
 
-## OkHttp
--dontwarn okio.**
-## OKHttp
-
-
 ## GSON 2.2.4 specific rules ##
-
-# Gson uses generic type information stored in a class file when working with fields. Proguard
-# removes such information by default, so configure it to keep all of it.
--keepattributes Signature
-
-# For using GSON @Expose annotation
--keepattributes *Annotation*
-
--keepattributes EnclosingMethod
 
 # Gson specific classes
 -keep class sun.misc.Unsafe { *; }
@@ -316,104 +291,3 @@ the SDK before launching the SDK as shown below:
 ## Releases
 
 Our release log can be found [here](https://github.com/Veriff/veriff-sample-android/blob/master/RELEASES.MD)
-
-# Upgrading SDK
-
-## Upgrading Veriff SDK from 1.* to 2.+
-
-### Veriff SDK upgrade to 2.+
-
-Veriff SDK 2.+ integration has changed significantly since 1.*. There are mayor changes in the SDK distribution where the SDK from now on is distributed via gradle import and many previously required services have been removed and trimmed down.
-
-### Remove Veriff SDK required Firebase code
-
-If your application uses Firebase notifications
-    Remove Veriff message handling from your Firebase service class and instead you can handle your notification directly
-
-```java
-    if (!handleVeriffNotifications(remoteMessage)) {
-        handleClientApplicationNotifications(remoteMessage);
-    }
-```
-
-If your application does not use Firebase notifications
-Delete both Firebase classes that extend **FirebaseInstanceIdService** and **FirebaseMessagingService** Remove Firebase services from the AndroidManifest:
-
-``` java
-      <!-- Implement Firebase notification service that handles Veriff notifications-->
-      <service android:name=".service.SampleFirebaseMessagingService">
-         <intent-filter>
-             <action android:name="com.google.firebase.MESSAGING_EVENT" />
-         </intent-filter>
-      </service>
-      <!-- Implement FirebaseInstanceIdService -->
-      <service android:name=".service.SampleFirebaseInstanceIdService"
-        android:exported="false">
-         <intent-filter>
-             <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-         </intent-filter>
-      </service>
-```
-  Finally remove all Firebase dependencies from the app build.gradle file
-
-## Remove the dependency on the .aar file and replace it with the gradle import from Veriff maven repo
-
-  Remove the veriff SDK .aar file from the lib directory
-
-  If you are not using any other manually added libraries remove the lib directory and the  reference to the lib directory from the application build.gradle file.
-``` java
-  allprojects {
-      repositories {
-          jcenter()
-          flatDir {
-              dirs 'libs'
-          }
-      }
-  }
-```
-  Add a new maven repository destination under the root build.gradle repositories tag in allprojects bracket. It should contain the following maven repositories:
-
-``` java
-  allprojects {
-      repositories {
-          maven { url "https://cdn.veriff.me/android/" } //veriff
-          google()
-          jcenter()
-
-      }
-  }
-```
-
-
-  From the application build.gradle file remove all Veriff dependencies that you don't use as those are no longer needed and have been packaged in the gradle import
-
-  The exception is <implementation 'io.probity.sdk:collector:1.0.0'> that still needs to be added on the parent application side.
-``` java
-  implementation "com.google.firebase:firebase-core:16.0.6"
-  implementation "com.google.firebase:firebase-messaging:17.3.4"
-  implementation "com.google.android.gms:play-services-gcm:16.0.0"
-  implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-  implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-  implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-  implementation 'com.squareup.okhttp3:okhttp:3.10.0'
-  implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
-  implementation 'com.jaredrummler:android-device-names:1.0.7'
-  implementation 'com.koushikdutta.ion:ion:2.2.1'
-  implementation 'com.twilio:video-android:1.3.4'
-  implementation 'io.jsonwebtoken:jjwt:0.6.0'
-  implementation 'org.greenrobot:eventbus:3.1.1'
-```
-
-  Remove irrelevant return values from VeriffSDKStatusUpdatedService and VeriffStatusReceiver
-
-``` java
-  VeriffConstants.STATUS_OUT_OF_BUSINESS_HOURS, VeriffConstants.STATUS_UNABLE_TO_RECORD_AUDIO and VeriffConstants.STATUS_VIDEO_CALL_ENDED
-```
-  As a final step add the import for Veriff libary in the application build.gradle dependency list. It should contain the following line:
-
-``` java
-  implementation 'com.veriff:veriff-library:2.4.5'
-```
-
-
-

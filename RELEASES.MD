@@ -1,4 +1,12 @@
 ### Latest Android SDK releases
+<details><summary>Release 2.4.6</summary>
+<ul>
+    <li>Improved downstream proguard rules</li>
+    <li>Fixed SDK crashes after process recreate</li>
+    <li>Fixed a large number of bugs concerning uploads</li>
+    <li>Fixed restarting the verification from the "No internet" error screen</li>
+</ul>
+</details>
 <details><summary>Release 2.4.5</summary>
 <ul>
     <li>Fixed dark room warning not being translated</li>
