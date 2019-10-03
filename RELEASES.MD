@@ -1,4 +1,12 @@
 ### Latest Android SDK releases
+<details><summary>Release 2.4.7</summary>
+<ul>
+    <li>Added support for Mexican Spanish</li>
+    <li>Removed white screen as flash while taking selfie</li>
+    <li>WebRTC updates and improvements</li>
+</ul>
+</details>
+
 <details><summary>Release 2.4.6</summary>
 <ul>
     <li>Improved downstream proguard rules</li>
