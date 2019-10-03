@@ -37,7 +37,7 @@ It should contain the following maven repositories:
 ```
 Add a dependency to the application ```build.gradle```:
 ``` java
-    implementation 'com.veriff:veriff-library:2.4.6'
+    implementation 'com.veriff:veriff-library:2.4.7'
 ```
 
 #### Permissions
