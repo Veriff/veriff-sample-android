@@ -1,4 +1,13 @@
 ### Latest Android SDK releases
+<details><summary>Release 2.4.8</summary>
+<ul>
+    <li>Added support for additional image quality checks</li>
+    <li>Fixed language change from Spanish to Mexican Spanish</li>
+    <li>Fixed "service did not then call startForeground" crashes</li>
+    <li>Fixed video not working with the combination of Veriff, old Gradle plugin and OkHttp 4</li>
+</ul>
+</details>
+
 <details><summary>Release 2.4.7</summary>
 <ul>
     <li>Added support for Mexican Spanish</li>
