@@ -1,14 +1,12 @@
 package com.veriff.demo.utils
 
-import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import com.google.gson.Gson
 import com.veriff.demo.AppConfig
 import com.veriff.demo.loging.Log
-import mobi.lab.veriff.data.ColorSchema
 import mobi.lab.veriff.data.Veriff
-import mobi.lab.veriff.network.AcceptHeaderInterceptor
 import mobi.lab.veriff.util.LogAccess
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -42,18 +40,9 @@ class GeneralUtils {
 
         @JvmStatic
         fun launchVeriffSDK(sessionToken: String, activity: AppCompatActivity, baseUrl: String) {
-            val schema = ColorSchema.Builder()
-                    .setHeader(Color.TRANSPARENT, 1f)
-                    .setBackground(Color.DKGRAY)
-                    .setFooter(Color.GRAY, 1f)
-                    //.setControlsColor(ContextCompat.getColor(this, R.color.red))
-                    .build()
-
             //enable logging for the library
             Veriff.setLoggingImplementation(Log.getInstance(activity))
             val veriffSDK = Veriff.Builder(baseUrl, sessionToken)
-            veriffSDK.setCustomColorSchema(schema)
-
             veriffSDK.launch(activity, AppConfig.REQUEST_VERIFF)
         }
 
@@ -66,9 +55,20 @@ class GeneralUtils {
             val okHttpClient: OkHttpClient
             val retrofit: Retrofit
 
+            val acceptInterceptor = Interceptor { chain ->
+                val HEADER_ACCEPT = "Accept"
+                val HEADER_VALUE_ACCEPT = "application/vnd.veriff.v1+json"
+                var request = chain.request()
+                request = request.newBuilder()
+                        .removeHeader(HEADER_ACCEPT)
+                        .addHeader(HEADER_ACCEPT, HEADER_VALUE_ACCEPT)
+                        .build()
+                chain.proceed(request)
+            }
+
             // create regular retrofit client
             okHttpClient = OkHttpClient.Builder()
-                    .addInterceptor(AcceptHeaderInterceptor())
+                    .addInterceptor(acceptInterceptor)
                     .addInterceptor(logInterceptor)
                     .build()
 
