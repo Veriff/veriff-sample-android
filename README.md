@@ -3,4 +3,4 @@
 
 # Notice
 
-We have moved our documentation to [https://developers.veriff.com/#android-sdk-integration].
+We have moved our documentation to [https://developers.veriff.com/#android-sdk-integration](https://developers.veriff.com/#android-sdk-integration).
