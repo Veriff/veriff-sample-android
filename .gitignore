@@ -1,9 +1,1 @@
-*.iml
-.idea/
-.gradle/
-/local.properties
-app/signing/release.jks
 .DS_Store
-/build
-/captures
-.externalNativeBuild
